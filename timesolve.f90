@@ -9,7 +9,6 @@ integer it
        
 
    call cfl(u)
-!    dt=SF*dx
    
       if(t>=tt)then
          exit

@@ -1,12 +1,8 @@
 module global        
 implicit none
 
-integer           M1                                !x方向网格数
 integer           nv                                !虚拟网格点数
 integer           JX                                !x方向网格数 
-integer           nk                                !识别器类型
-integer           kind_problem                      !问题类型
-integer           kind_split
 double precision dLx                               !x方向计算区域长度  
 double precision dx                                !x方向单元尺寸
 double precision SF                                !CFL数
@@ -45,4 +41,5 @@ double precision::gamma0=1.4d0
 double precision::miu=1.4d0
 double precision::a0=1.4d0
 double precision::pi=6*dasin(0.5d0)
+double precision::s0=6*dasin(0.5d0)
 end module

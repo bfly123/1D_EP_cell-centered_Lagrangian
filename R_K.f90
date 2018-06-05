@@ -3,10 +3,12 @@
  use constant
  implicit none
  integer i,j,k
- double precision ut2(-nv:jx+nv,0:2)
- double precision ut3(-nv:jx+nv,0:2)
- double precision ut1(-nv:jx+nv,0:2)
- double precision ut4(-nv:jx+nv,0:2)
+ double precision ut2(-nv:jx+nv,0:3)
+ double precision ut3(-nv:jx+nv,0:3)
+ double precision ut1(-nv:jx+nv,0:3)
+ double precision ut4(-nv:jx+nv,0:3)
+ double precision udx(-nv:jx+nv,0:3)
+ double precision u_half(-nv:jx+nv)
    
  !   call bound(u)
  !   call space(u)
@@ -38,10 +40,13 @@
  !call bound(u)
 
     call bound(u)
-
-	x(:)=x(:)+dt*h_G(:,1)/h_G(i,0)
-    call space(u,x,dt)
-    u=u+dt*f
-    call bound(u)
+    call space(u,f,u_half)
+	x(:)=x(:)+dt*u_half(:)
+	do i=-nv+1,nv+jx
+		dx= x(i)-x(i-1)
+    	udx(i,:)=udx(i,:)+dt*f
+		u(i,:) = udx(i,:)/dx
+	enddo
+   call bound(u)
 endsubroutine
      
