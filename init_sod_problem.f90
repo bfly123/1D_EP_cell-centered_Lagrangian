@@ -1,34 +1,21 @@
 subroutine init_sod_problem
-use global
 use init_tran
-use constant
+use global_cont
+use global
 implicit none
 integer i,j,k
 
-    nk=1
-      
-      
-      
     nv=4
-    M1=401 
-    jx=M1
-
+    jx=401 
     dlx=2
-
     dx=dlx/jx
 
-
-    allocate(U(-nv:jx+nv,0:2))
-    allocate(f(-nv:jx+nv,0:2))
-    allocate (fp(-nv:jx+nv,0:2))
-    allocate (fm(-nv:jx+nv,0:2))
+    allocate(U(-nv:jx+nv,0:3))
+    allocate(X(-nv:jx+nv))
     
     u=0
     f=0
-    fp=0
-    fm=0
 
-    SF=0.1
     TT=0.28
 
     rou2=0.125

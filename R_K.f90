@@ -1,6 +1,4 @@
- subroutine R_K
- use global
- use constant
+ subroutine R_K(dt)
  implicit none
  integer i,j,k
  double precision ut2(-nv:jx+nv,0:3)
@@ -9,6 +7,7 @@
  double precision ut4(-nv:jx+nv,0:3)
  double precision udx(-nv:jx+nv,0:3)
  double precision u_half(-nv:jx+nv)
+ double precision dx,dt,dxmin
    
  !   call bound(u)
  !   call space(u)
@@ -38,15 +37,15 @@
  !call space(ut3)
  !u=1.d0/3*(-u+ut1+2*ut2+ut3)+1.d0/6*dt*f
  !call bound(u)
-
-    call bound(u)
-    call space(u,f,u_half)
+call bound
+call space(u,f,u_half)
 	x(:)=x(:)+dt*u_half(:)
 	do i=-nv+1,nv+jx
 		dx= x(i)-x(i-1)
     	udx(i,:)=udx(i,:)+dt*f
 		u(i,:) = udx(i,:)/dx
 	enddo
-   call bound(u)
+
+	call bound(u,x)
 endsubroutine
      

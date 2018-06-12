@@ -11,10 +11,9 @@ double precision f4(-nv:jx+nv,0:3)
 double precision u_half(-nv:jx+nv)
     
 
-    call SW_splitting(u4)
 	call  upwind(nv,jx,u4(,0:3),ul(,0:3),ur(,0:3))
-	call  HLLC_EP(nv,jx,ul,ur,h,u_half)
-    call Output1(h)  
+	call  HLLC_EP(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
+    !call Output1(h)  
 
     do k=0,3
      do i=0,jx
@@ -22,7 +21,6 @@ double precision u_half(-nv:jx+nv)
      enddo
      
     enddo
-  
 
     end subroutine
  

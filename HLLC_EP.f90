@@ -1,8 +1,9 @@
-subroutine HLLC_EP(nv,jx,ul,ur,h,u_half)
+subroutine HLLC_EP(nv,jx,ul,u,ur,h,u_half)
 	  use global_cont
 	  implicit none
 	  double precision  f_eta,fgamma 
 	  integer nv,i,jx
+	  double precision u(-nv:jx+nv)
 	  double precision ul(-nv:jx+nv,0:3)
 	  double precision ur(-nv:jx+nv,0:3)
 	  double precision h(-nv:jx+nv,0:3)
@@ -55,7 +56,7 @@ do i =-nv, jx+nv
 	sigmaxR_star=sxxR_star-PR_star
 	
 	
-	if (s_star.le.0)then
+	if (s_star.ge.u(i))then
 		h(i,0)=0
 		h(i,1)=pL_star-sxxL_star
 		h(i,2)=(pL_star-sxxL_star)*s_star
