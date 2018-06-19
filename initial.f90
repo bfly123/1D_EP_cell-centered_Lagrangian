@@ -5,12 +5,11 @@ implicit none
 !**********kind of problem*************
 !**1 double mach reflection 
 !     
-    kind_problem=6 
     !case 1 sod_problem
     !case 2 shu_osher
     !case 3 lax_problem
     !case 4 two_blast
-    
+  kind_problem =1  
       
   select case(kind_problem) 
     

@@ -1,12 +1,14 @@
-subroutine upwind(nv,N,LF,RF,H)
+subroutine upwind(nv,N,u,ul,ur)
 implicit none
 integer nv ,i,j,k,n
-double precision lf(-nv:nv+n)
-double precision rf(-nv:nv+n)
-double precision h(-nv:nv+n)
+double precision ul(-nv:nv+n)
+double precision ur(-nv:nv+n)
+double precision u(-nv:nv+n)
 
-do i=-1,n+1
-  h(i)=lf(i)+rf(i+1)
+do i=-nv,n+nv+1
+ul(i)= u(i)
+ur(i)= u(i+1)
+
   enddo
   
 end

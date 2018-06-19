@@ -10,16 +10,18 @@ double precision h(-nv:jx+nv,0:3)
 double precision f4(-nv:jx+nv,0:3)
 double precision u_half(-nv:jx+nv)
     
+	do i =0,3	
+	call  upwind(nv,jx,u4(:,i),ul(:,i),ur(:,i))
+	enddo
 
-	call  upwind(nv,jx,u4(,0:3),ul(,0:3),ur(,0:3))
+
 	call  HLLC_EP(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
     !call Output1(h)  
 
     do k=0,3
-     do i=0,jx
-        f(i,k)=h(i,k)-h(i-1,k)
+     do i=-nv+2,jx+nv-2
+        f4(i,k)=h(i,k)-h(i-1,k)
      enddo
-     
     enddo
 
     end subroutine
