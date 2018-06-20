@@ -31,7 +31,6 @@ do i =-nv, jx+nv-1
 	  uuR = ur(i,1)/rhoR
 	  feta = f_eta(rhoR)
 	  pR = (ur(i,2)/rhoR-0.5*uuR**2)*rho0*gamma0+rho0*a0**2*feta
-	  write(*,*)pL,pR
 	  sxxR= ur(i,3)
 
 	  feta_eta=f_eta_eta(rhoR)
@@ -58,8 +57,8 @@ do i =-nv, jx+nv-1
 !	sigmaxL_star=sxxL_star-PL_star
 !	sigmaxR_star=sxxR_star-PR_star
 	
-	!if (s_star.ge.u(i))then
-	if (s_star.le.0)then
+	if (s_star.ge.u(i))then
+	!if (s_star.le.0)then
 	!if (s_star.ge.))then
 		h(i,0)=0
 		h(i,1)=pL_star-sxxL_star
@@ -71,7 +70,6 @@ do i =-nv, jx+nv-1
 	endif
 	h(i,3)=-4*miu/3*s_star
 enddo
-stop
 
 endsubroutine
 

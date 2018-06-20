@@ -12,9 +12,9 @@ integer ti
 		dt=tt-t
       endif   
       t=t+dt
+      write(*,*)'T=',T,'dt=',dt
 	  ti=ti+1
 	  call R_K(dt)
-      write(*,*)'T=',T,'dt=',dt
 !stop
    enddo
 end  

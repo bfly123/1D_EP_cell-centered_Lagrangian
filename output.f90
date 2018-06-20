@@ -4,7 +4,6 @@
     implicit none
     double precision rou,uu,p,f_eta
     integer i,j
-
         open(1,file='result.dat',status='unknown')
       do 80 i=0,Jx       
         rou=U(i,0)
