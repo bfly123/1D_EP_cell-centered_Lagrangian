@@ -41,8 +41,8 @@
 		dx= x1(i)-x1(i-1)
     	udx1(i,:)=udx(i,:)-dt*f(i,:)
 		u(i,:) = udx1(i,:)/dx
-		u(i,3) = fgamma(u(i,3))
-		udx1(i,3)=u(i,3)*dx
+	!	u(i,3) = fgamma(u(i,3))
+	!	udx1(i,3)=u(i,3)*dx
 	enddo
 
 	  !*************2**********
@@ -54,8 +54,8 @@
 		dx= x2(i)-x2(i-1)
     	udx2(i,:)=3.d0/4*udx(i,:)+1.d0/4*udx1(i,:)-1.d0/4*dt*f(i,:)
 		u(i,:) = udx2(i,:)/dx
-		u(i,3) = fgamma(u(i,3))
-		udx2(i,3)=u(i,3)*dx
+	!	u(i,3) = fgamma(u(i,3))
+	!	udx2(i,3)=u(i,3)*dx
 	enddo
 
 	  !*************3**********

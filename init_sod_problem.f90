@@ -7,7 +7,7 @@ integer i,j,k
 double precision f_eta,dx,p
 
     nv=4
-    jx=8000
+    jx=800
     dlx=5.0d-2
 	dx=dlx/jx
     allocate(U(-nv:jx+nv,0:3))
