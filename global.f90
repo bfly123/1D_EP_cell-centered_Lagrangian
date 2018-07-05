@@ -23,12 +23,12 @@ end module
 
 module global_cont
 implicit none
-double precision::Y0=3.d8
-double precision::rho0=2785
-double precision::gamma0=2.d0
-double precision::miu=2.76d10
-double precision::a0=5328
-double precision::pi=6*dasin(0.5d0)
-double precision::s0=1.338
+double precision::Y0
+double precision::rho0
+double precision::gamma0
+double precision::miu
+double precision::a0
+double precision::pi
+double precision::s0
 end module
 

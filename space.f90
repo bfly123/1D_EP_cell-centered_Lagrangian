@@ -11,8 +11,8 @@ double precision f4(-nv:jx+nv,0:3)
 double precision u_half(-nv:jx+nv)
     
 	do i =0,3	
-	!call  upwind(nv,jx,u4(:,i),ul(:,i),ur(:,i))
-	call  WENO5_new(nv,jx,u4(:,i),ul(:,i),ur(:,i))
+	call  upwind(nv,jx,u4(:,i),ul(:,i),ur(:,i))
+	!call  WENO5_new(nv,jx,u4(:,i),ul(:,i),ur(:,i))
 	enddo
 
 

@@ -5,18 +5,18 @@ implicit none
 !**********kind of problem*************
 !**1 double mach reflection 
 !     
-    !case 1 sod_problem
-    !case 2 shu_osher
+    !case 1 Wilkins' problem
+    !case 2 Piston problem
     !case 3 lax_problem
     !case 4 two_blast
-  kind_problem =1  
+  kind_problem =2  
       
   select case(kind_problem) 
     
     case(1)
-        call init_sod_problem
-    !case(2)
-    !    call init_shu_osher_problem 
+        call init_Wilkins_problem
+    case(2)
+        call init_Piston_problem 
     !case(3)
     !    call init_lax_problem
     !case(4)
