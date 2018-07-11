@@ -15,7 +15,7 @@ double precision f_eta,dx,p
 		s0=1.49
 
     nv=4
-    jx=80000
+    jx=800
     dlx=1.0
 	dx=dlx/jx
     allocate(U(-nv:jx+nv,0:3))
