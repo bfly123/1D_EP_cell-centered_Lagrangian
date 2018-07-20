@@ -7,14 +7,15 @@
 80	output.f90	/^80    continue$/;"	l	subroutine:Output	file:
 80	output1.f90	/^80    continue$/;"	l	subroutine:Output1	file:
 83	output.f90	/^83    format(D20.10,D20.10,D20.10,D20.10,D20.10,D20.10)$/;"	l	subroutine:Output	file:
-83	output1.f90	/^83    format(D20.10,D20.10,D20.10,D20.10)$/;"	l	subroutine:Output1	file:
+83	output1.f90	/^83    format(D20.10,D20.10,D20.10,D20.10,D20.10)$/;"	l	subroutine:Output1	file:
 Bin	makefile	/^Bin = main.exe$/;"	m
 CFL	CFL.f90	/^      subroutine CFL(/;"	s
-F90	makefile	/^F90 = gfortran$/;"	m
+F90	makefile	/^F90 = ifort -mkl$/;"	m
 HLLC_EP	HLLC_EP.f90	/^subroutine HLLC_EP(/;"	s
 JX	global.f90	/^integer           JX /;"	v	module:global
+LF_splitting	LF_splitting.f90	/^subroutine LF_splitting(/;"	s
 LF_splitting	splitting.f90	/^subroutine LF_splitting(/;"	s
-Objects	makefile	/^Objects = global.o fun.o bound_choose.o  bound_Wilkins_problem.o  bound_Piston_problem.o CFL.o  init_Wilkins_problem.o  init_Piston_problem.o initial.o  Main.o output.o  R_K.o space.o  timesolve.o upwind.o HLLC_EP.o  WENO5_NEW.o$/;"	m
+Objects	makefile	/^Objects = global.o fun.o bound_choose.o  bound_Wilkins_problem.o  bound_Piston_problem.o CFL.o  init_Wilkins_problem.o  init_Piston_problem.o initial.o  Main.o output.o  R_K.o space.o  timesolve.o upwind.o HLLC_EP.o  WENO5_NEW.o WENO5_NEW_LF.o LF_splitting.o eigen_var.o  reverse.o output1.o WENO3_new.o$/;"	m
 Output	output.f90	/^    subroutine Output$/;"	s
 Output1	output1.f90	/^    subroutine Output1(/;"	s
 R_K	R_K.f90	/^ subroutine R_K(/;"	s
@@ -36,6 +37,7 @@ bound_interface	bound_interface.f90	/^subroutine bound_interface(/;"	s
 bound_lax_problem	bound_lax_problem.f90	/^subroutine bound_lax_problem(/;"	s
 bound_two_blast_waves	bound_two_balst_waves.f90	/^subroutine bound_two_blast_waves(/;"	s
 dLx	global.f90	/^double precision dLx /;"	v	module:global
+eigen_var	eigen_var.f90	/^subroutine eigen_var(/;"	s
 f_eta	fun.f90	/^function f_eta(/;"	f
 f_eta_eta	fun.f90	/^ function f_eta_eta(/;"	f
 fgamma	fun.f90	/^function fgamma(/;"	f
@@ -60,11 +62,12 @@ nv	global.f90	/^integer           nv /;"	v	module:global
 p1	global.f90	/^double precision p1$/;"	v	module:init_tran
 p2	global.f90	/^double precision p2$/;"	v	module:init_tran
 pi	global.f90	/^double precision::pi$/;"	v	module:global_cont
+reverse	reverse.f90	/^subroutine reverse(/;"	s
 rho0	global.f90	/^double precision::rho0$/;"	v	module:global_cont
 rho1	global.f90	/^double precision rho1 /;"	v	module:init_tran
 rho2	global.f90	/^double precision rho2 /;"	v	module:init_tran
 s0	global.f90	/^double precision::s0$/;"	v	module:global_cont
-source	makefile	/^source = global.f90 fun.f90 bound_choose.f90   bound_Wilkins_problem.f90  bound_Piston_problem.f90  CFL.f90  init_Wilkins_problem.f90 init_Piston_problem.f90  initial.f90  Main.f90 output.f90  R_K.f90 space.f90 timesolve.f90  upwind.f90  HLLC_EP.f90 WENO5_NEW.f90$/;"	m
+source	makefile	/^source = global.f90 fun.f90 bound_choose.f90   bound_Wilkins_problem.f90  bound_Piston_problem.f90  CFL.f90  init_Wilkins_problem.f90 init_Piston_problem.f90  initial.f90  Main.f90 output.f90  R_K.f90 space.f90 timesolve.f90  upwind.f90  HLLC_EP.f90 WENO5_NEW.f90 WENO5_NEW_LF.f90 LF_splitting.f90 eigen_var.f90 reverse.f90 output1.f90WENO3_new.f90$/;"	m
 space	space.f90	/^subroutine space(/;"	s
 sxx1	global.f90	/^double precision sxx1$/;"	v	module:init_tran
 sxx2	global.f90	/^double precision sxx2$/;"	v	module:init_tran
@@ -73,5 +76,7 @@ u1	global.f90	/^double precision u1$/;"	v	module:init_tran
 u2	global.f90	/^double precision u2$/;"	v	module:init_tran
 u_f	u_f.f90	/^subroutine u_f(/;"	s
 upwind	upwind.f90	/^subroutine upwind(/;"	s
+weno3_new	WENO3_new.f90	/^subroutine weno3_new(/;"	s
 weno5	weno5.f90	/^subroutine weno5(/;"	s
 weno5_new	WENO5_NEW.f90	/^subroutine weno5_new(/;"	s
+weno5_new_LF	WENO5_NEW_LF.f90	/^subroutine weno5_new_LF(/;"	s

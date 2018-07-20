@@ -7,7 +7,7 @@ subroutine weno5_new_LF(nv,jx,LF,RF,h)
  integer  n,nv,jx,i
  double precision lF(-nv:nv+jx),RF(-nv:nv+jx),h(-nv:nv+jx)
  double precision  hr
-         SS=1E-20
+         SS=1E-4
          a300=1.d0/3.d0
          a301=-7.d0/6.d0
          a302=11.d0/6.d0

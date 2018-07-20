@@ -5,7 +5,7 @@ subroutine weno5_new(nv,jx,F,HL,HR)
                    q30,q31,q32,aa0,aa1,aa2,w0,w1,w2
  integer  n,nv,jx,i
  double precision hl(-nv:nv+jx),hr(-nv:nv+jx),f(-nv:nv+jx)
-         SS=1E-5
+         SS=1E-4
          a300=1.d0/3.d0
          a301=-7.d0/6.d0
          a302=11.d0/6.d0
@@ -31,15 +31,14 @@ subroutine weno5_new(nv,jx,F,HL,HR)
              Q30=A300*f(i-2)+A301*f(i-1)+A302*f(i)
              Q31=A310*f(i-1)+A311*f(i)+A312*f(i+1)
              Q32=A320*f(i)+A321*f(i+1)+A322*f(i+2)
-            
-!            aa0=C30/(ss+IS0)**2
-!            aa1=c31/(ss+IS1)**2
-!            aa2=c32/(ss+IS2)**2
 
-                aa0=C30*(1.0d0+(tao5/(ss+IS0))**2)
-                aa1=C31*(1.0d0+(tao5/(ss+IS1))**2)
-                aa2=C32*(1.0d0+(tao5/(ss+IS2))**2)   
-!!      
+!                aa0=C30*(1.0d0+(tao5/(ss+IS0))**2)
+!                aa1=C31*(1.0d0+(tao5/(ss+IS1))**2)
+!                aa2=C32*(1.0d0+(tao5/(ss+IS2))**2)   
+            aa0=0.1d0/(ss+IS0)**4
+            aa1=0.6d0/(ss+IS1)**4
+            aa2=0.3d0/(ss+IS2)**4
+!      
                 w0=aa0/(aa0+aa1+aa2)
                 w1=aa1/(aa0+aa1+aa2)
                 w2=aa2/(aa0+aa1+aa2)
@@ -48,9 +47,6 @@ subroutine weno5_new(nv,jx,F,HL,HR)
 !         aa0=0.1*(1.0d0+(tao5/(ss+IS0)))
 !          aa1=0.6*(1.0d0+(tao5/(ss+IS1)))
 !          aa2=0.3*(1.0d0+(tao5/(ss+IS2))) 
-            !aa0=0.1d0/(ss+IS0)**2
-            !aa1=0.6d0/(ss+IS1)**2
-            !aa2=0.3d0/(ss+IS2)**2
 
 !     h(i)=1.d0/30*lf(i-2)-13.d0/60*lf(i-1)+47.d0/60*lf(i)+27.d0/60*lf(i+1)-1.d0/20*lf(i+2)
   
@@ -68,13 +64,13 @@ subroutine weno5_new(nv,jx,F,HL,HR)
              Q31=A310*f(i+2)+A311*f(i+1)+A312*f(i)
              Q32=A320*f(i+1)+A321*f(i)+A322*f(i-1)
             
-!                aa0=C30/(ss+IS0)**2
-!                aa1=c31/(ss+IS1)**2
-!                aa2=c32/(ss+IS2)**2
+                aa0=C30/(ss+IS0)**4
+                aa1=c31/(ss+IS1)**4
+                aa2=c32/(ss+IS2)**4
 
-                aa0=C30*(1.0d0+(tao5/(ss+IS0))**2)
-                aa1=C31*(1.0d0+(tao5/(ss+IS1))**2)
-                aa2=C32*(1.0d0+(tao5/(ss+IS2))**2)          
+!               aa0=C30*(1.0d0+(tao5/(ss+IS0))**2)
+!                aa1=C31*(1.0d0+(tao5/(ss+IS1))**2)
+!                aa2=C32*(1.0d0+(tao5/(ss+IS2))**2)          
 
 
                  w0=aa0/(aa0+aa1+aa2)
