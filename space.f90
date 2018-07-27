@@ -17,7 +17,7 @@ double precision u_half(-nv:jx+nv)
 double precision  rho,uu,p,f_eta
 integer kind_split
 
-kind_split =2
+kind_split =1
 
 select case(kind_split) 
 case(1)
@@ -33,8 +33,8 @@ case(1)
 	enddo
 	do i=0,3
 	!call  WENO5_new(nv,jx,uo(:,i),ulo(:,i),uro(:,i))
-!	call  WENO3_new(nv,jx,uo(:,i),ulo(:,i),uro(:,i))
-	call  WENO3LIU_new(nv,jx,uo(:,i),ulo(:,i),uro(:,i))
+	call  WENO3_new(nv,jx,uo(:,i),ulo(:,i),uro(:,i))
+!	call  WENO3LIU_new(nv,jx,uo(:,i),ulo(:,i),uro(:,i))
 	enddo
 	do i=-nv,jx+nv
 	 rho= ulo(i,0)

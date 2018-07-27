@@ -15,14 +15,13 @@ subroutine bound_Wilkins_problem(u4)
          
 !×ó±ß½ç  
 	   DO I=-nv,-1
-	   rho=u(0,0)
+
+	   rho=rho0
 	   uu=u(0,1)/rho
 	  u(i,0)=rho
 	  u(i,1)=uu*rho
-      U(i,2)=(p1-rho0*a0**2*f_eta(rho))/(rho0*gamma0)*rho0+0.5d0*rho*uu*uu
+      U(i,2)=(-rho0*a0**2*f_eta(rho))/(rho0*gamma0)*rho0+0.5d0*rho*uu*uu
 	  u(i,3)=0
-
-	   
 
 	   enddo
     
