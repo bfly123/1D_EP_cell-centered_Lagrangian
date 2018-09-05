@@ -50,25 +50,40 @@ do i =-nv, jx+nv-1
 	
 	s_star=(pR-pL+rhoL*(uuL-sxL_star)*(sL-uuL)-rhoR*(uuR-sxR_star)*(sR-uuR))/(rhoL*(sL-uuL)-rhoR*(sR-uuR))
 
-	u_half(i)=s_star
+	!u_half(i)=s_star
 	pL_star=pL+rhoL*(sL-uuL)*(s_star+sxL_star-uuL)
 	pR_star=pR+rhoR*(sR-uuR)*(s_star+sxR_star-uuR)
 	
 !	sigmaxL_star=sxxL_star-PL_star
 !	sigmaxR_star=sxxR_star-PR_star
 	
-	if (s_star.ge.u(i))then
+	if (sL.ge.0)then
+		h(i,0)=0
+		h(i,1)=pL-sxxL
+		h(i,2)=(pL-sxxL)*uuL
+		h(i,3)=-4*miu/3*uuL
+		u_half(i)=uuL
 	!if (s_star.le.0)then
 	!if (s_star.ge.))then
+else if (S_star.ge.0)then
 		h(i,0)=0
 		h(i,1)=pL_star-sxxL_star
 		h(i,2)=(pL_star-sxxL_star)*s_star
-	else
+		h(i,3)=-4*miu/3*s_star
+		u_half(i)=s_star
+	else if (SR.ge.0)then
 		h(i,0)=0
 		h(i,1)=pR_star-sxxR_star
 		h(i,2)=(pR_star-sxxR_star)*s_star
+		h(i,3)=-4*miu/3*s_star
+		u_half(i)=s_star
+	else
+		h(i,0)=0
+		h(i,1)=pR-sxxR
+		h(i,2)=(pR-sxxR)*uuR
+		h(i,3)=-4*miu/3*uuR
+		u_half(i)=uuR
 	endif
-	h(i,3)=-4*miu/3*s_star
 enddo
 
 endsubroutine

@@ -9,16 +9,13 @@ implicit none
     !case 2 Piston problem
     !case 3 lax_problem
     !case 4 two_blast
-  kind_problem =1  
-      
+  kind_problem =2 
   select case(kind_problem) 
     
     case(1)
         call init_Wilkins_problem
     case(2)
         call init_Piston_problem 
-    !case(3)
-    !    call init_lax_problem
     !case(4)
     !   call init_two_blast_waves
     !case(5)

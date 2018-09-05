@@ -28,7 +28,8 @@
     call bound(u)
 	do i=-nv+1,nv+jx
 		dx= x(i)-x(i-1)
-    	udx(i,:)=u(i,:)*dx
+    	udx(i,0:2)=u(i,0:2)*dx
+    	udx(i,3)=u(i,3)
 	enddo
   select case(time_order)
 
@@ -40,7 +41,8 @@
 	do i=-nv+1,nv+jx
 		dx= x1(i)-x1(i-1)
     	udx1(i,:)=udx(i,:)-dt*f(i,:)
-		u(i,:) = udx1(i,:)/dx
+		u(i,0:2) = udx1(i,0:2)/dx
+    	u(i,3)=udx1(i,3)
 	!	u(i,3) = fgamma(u(i,3))
 	!	udx1(i,3)=u(i,3)*dx
 	enddo
@@ -54,6 +56,7 @@
 		dx= x2(i)-x2(i-1)
     	udx2(i,:)=3.d0/4*udx(i,:)+1.d0/4*udx1(i,:)-1.d0/4*dt*f(i,:)
 		u(i,:) = udx2(i,:)/dx
+    	u(i,3)=udx2(i,3)
 	!	u(i,3) = fgamma(u(i,3))
 	!	udx2(i,3)=u(i,3)*dx
 	enddo
@@ -66,6 +69,7 @@
 		dx= x(i)-x(i-1)
     	udx(i,:)=1.d0/3*udx(i,:)+2.d0/3*udx2(i,:)-2.d0/3*dt*f(i,:)
 		u(i,:) = udx(i,:)/dx
+    	u(i,3)=udx(i,3)
 		u(i,3) = fgamma(u(i,3))
 	enddo
 

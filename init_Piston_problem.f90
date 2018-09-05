@@ -15,7 +15,7 @@ double precision f_eta,dx,p
 		s0=1.49
 
     nv=4
-    jx=800
+    jx=200
     dlx=1.0
 	dx=dlx/jx
     allocate(U(-nv:jx+nv,0:3))
@@ -25,7 +25,7 @@ double precision f_eta,dx,p
 
 
     TT=1.5d-4
-	SF=0.45d0
+	SF=0.1d0
 
     rho2=8930d0
     u2=20.d0
@@ -38,10 +38,18 @@ double precision f_eta,dx,p
     sxx1=0
 
     do i=-nv,jx+nv
+	!if (i>10)then
 			x(i)=i*dx 
 	        U(i,0)=rho1
             U(i,1)=rho1*u1
             U(i,2)=(p1-rho0*a0**2*f_eta(rho1))/(rho0*gamma0)*rho1+0.5d0*rho1*u1*u1
 			U(i,3)=0
+	!	else 
+	!ji!		x(i)=i*dx 
+       !     U(i,0)=rho2
+       !j     U(i,1)=rho2*u2
+        !    U(i,2)=(p2-rho0*a0**2*f_eta(rho2))/(rho0*gamma0)*rho2+0.5d0*rho2*u2*u2
+		!	U(i,3)=0
+		!endif
     enddo
 end 

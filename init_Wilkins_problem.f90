@@ -7,12 +7,12 @@ integer i,j,k
 double precision f_eta,dx,p
 
 		Y0=3.d8
-		rho0=2785
+		rho0=2785.d0
 		gamma0=2.d0
 		miu=2.76d10
-		a0=5328
+		a0=5328.d0
 		pi=6*dasin(0.5d0)
-		s0=1.338
+		s0=1.338d0
     nv=4
     jx=800
     dlx=5.0d-2

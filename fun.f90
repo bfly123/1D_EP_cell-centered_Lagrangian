@@ -4,7 +4,7 @@ function f_eta(rho)
 	  double precision:: rho,eta,f_eta
 
 	  eta=rho/rho0
-	  f_eta= (eta -1)*(eta-gamma0*(eta-1)/2)/(eta-s0*(eta-1))**2
+	  f_eta= (eta -1.d0)*(eta-gamma0*(eta-1.d0)/2.d0)/(eta-s0*(eta-1))**2
 
 	  end function
 
