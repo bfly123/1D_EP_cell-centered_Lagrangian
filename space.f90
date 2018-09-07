@@ -18,7 +18,7 @@ double precision u_half(-nv:jx+nv)
 double precision  rho,uu,p,f_eta
 integer kind_split
 
-kind_split =4
+kind_split =5
 
 select case(kind_split) 
 case(1)
@@ -32,10 +32,11 @@ case(1)
 	  uo(i,3)=u4(i,3)
 	enddo
 	do i=0,3
-	call  WENO5_new(nv,jx,uo(:,i),ulo(:,i),uro(:,i))
+!call  WENO5_new(nv,jx,uo(:,i),ulo(:,i),uro(:,i))
+
 	!call  WENO3_new(nv,jx,uo(:,i),ulo(:,i),uro(:,i))
 !	call  WENO3LIU_new(nv,jx,uo(:,i),ulo(:,i),uro(:,i))
-!	call  upwind(nv,jx,uo(:,i),ulo(:,i),uro(:,i))
+	call  upwind(nv,jx,uo(:,i),ulo(:,i),uro(:,i))
 	enddo
 	do i=-nv,jx+nv
 	 rho= ulo(i,0)
@@ -55,6 +56,8 @@ case(1)
 	 ur(i,3)= uro(i,3)
 	 enddo
 
+!call output1(ul)	
+!pause
 	call  HLLC_EP(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
 
 case(2)
@@ -79,30 +82,76 @@ case (3)
 	case(4)
 		do i =-nv,jx+nv
 		call eigen_var(u4(i,:),AR(i,:,:),AL(i,:,:))
+!		write(*,*) AR(i,2,3)
+!		pause
 		enddo
-	do i=-nv,jx+nv
-		uo(i,0:3)=matmul(u4(i,0:3),transpose(AR(i,0:3,0:3)))
+!	do i=-nv,jx+nv
+!		uo(i,0:3)=matmul(u4(i,0:3),transpose(AL(i,0:3,0:3)))
+!	enddo
+	uo=0
+	do i=0,3
+		do j=0,3
+	uo(:,i)=uo(:,i)+AL(:,i,j)*u4(:,j)
 	enddo
+	enddo
+!	 write(*,*) u4(0,0:3)
+!
+!u4=0
+!	do i=0,3
+!		do j=0,3
+!	u4(:,i)=u4(:,i)+Ar(:,j,i)*uo(:,j)
+!	enddo
+!	enddo
+!	 write(*,*) u4(0,0:3)
+!	 pause
+
 	do i=0,3
 	!call  WENO5_new(nv,jx,uo(:,i),ulo(:,i),uro(:,i))
 	call  upwind(nv,jx,uo(:,i),ulo(:,i),uro(:,i))
 !	call  WENO3_new(nv,jx,uo(:,i),ulo(:,i),uro(:,i))
 	enddo
-	do i=-nv,jx+nv
-	ul(i,0:3)=matmul(ulo(i,0:3),transpose(AL(i,0:3,0:3)))
-	ur(i,0:3)=matmul(uro(i,0:3),transpose(AL(i,0:3,0:3)))
+!	do i=-nv,jx+nv
+!	ul(i,0:3)=matmul(ulo(i,0:3),transpose(AR(i,0:3,0:3)))
+!	ur(i,0:3)=matmul(uro(i,0:3),transpose(AR(i,0:3,0:3)))
+!	enddo
+	ul=0
+	ur=0
+	do i=0,3
+		do j=0,3
+	ul(:,i)=ul(:,i)+AR(:,i,j)*ulo(:,j)
+	ur(:,i)=ur(:,i)+AR(:,i,j)*uro(:,j)
 	enddo
-!	do i=0,3
-!		do j=0,3
-!	ul(:,i)=ul(:,i)+AL(:,i,j)*ulo(:,j)
-!	ur(:,i)=ur(:,i)+AL(:,i,j)*uro(:,j)
-!	enddo
-!	enddo
-!call output1(ul)	
+	enddo
+call output1(ul)	
+pause
 !	  read(*,*)i
 	call  HLLC_EP(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
+!	u_half(:)=u4(:,1)/u4(:,0)
+	case(5)
 
-	endselect
+	do i=0,3
+	!call  WENO5_new(nv,jx,uo(:,i),ulo(:,i),uro(:,i))
+	call  upwind(nv,jx,u(:,i),ul(:,i),ur(:,i))
+!	call  WENO3_new(nv,jx,uo(:,i),ulo(:,i),uro(:,i))
+	enddo
+	do i = -nv,jx+nv
+		call eigen_var(ul(i,:),AR(i,:,:),AL(i,:,:))
+		ul(i,0:3)=matmul(ul(i,0:3),transpose(AL(i,0:3,0:3)))
+	!	ul(i,0:3)=matmul(ul(i,0:3),transpose(AR(i,0:3,0:3)))
+		call eigen_var(ur(i,:),AR(i,:,:),AL(i,:,:))
+		ur(i,0:3)=matmul(ur(i,0:3),transpose(AL(i,0:3,0:3)))
+	!	ur(i,0:3)=matmul(ur(i,0:3),transpose(AR(i,0:3,0:3)))
+		call eigen_var(u4(i,:),AR(i,:,:),AL(i,:,:))
+		ul(i,0:3)=matmul(ul(i,0:3),transpose(AR(i,0:3,0:3)))
+		ur(i,0:3)=matmul(ur(i,0:3),transpose(AR(i,0:3,0:3)))
+	enddo
+
+!call output1(ul)	
+!pause
+!	  read(*,*)i
+	call  HLLC_EP(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
+!	u_half(:)=u4(:,1)/u4(:,0)
+endselect
 
 
     do k=0,3

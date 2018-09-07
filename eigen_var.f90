@@ -31,7 +31,6 @@ integer i,j,info,k,m
 
 	  phi2=-4.d0*miu/3.d0/rho
 
-
 	  Ar(0,0)= 1.d0/b1
 	  Ar(1,0)= uu/b1
 	  Ar(2,0)= 0.d0
@@ -82,20 +81,21 @@ integer i,j,info,k,m
 		AL(3,3)=  0.5d0*(1.d0-s2/c2)
 
 !call reverse(Ar1,am1,4)
-
-!	  do i=1,4
-!	  do j =1,4
-!		Am(i-1,j-1)=Am1(i,j)
+A=0
+!	  do i=0,3
+!	  do j =0,3
+!	  do k=0,3
+!		 A(i,j)= A(i,j)+AL(i,k)*AR(k,j) 
+!		 enddo
 !		enddo
 !		enddo
-!ue=0	
-!do i=0,3
-!do j=0,3
-!ue(i)=ue(i)+Am(i,j)*u(j)
-!enddo
-!enddo
-!ue=matmul(u,transpose(Am))
+!write(*,*) A(0:3,0)
+!write(*,*) A(0:3,1)
+!write(*,*) A(0:3,2)
+!write(*,*) A(0:3,3)
+!!enddo
 !write(*,*) matmul(AR,AL)
+!write(*,*)AR(2,3)
 !pause
 
 	end

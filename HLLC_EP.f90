@@ -57,33 +57,61 @@ do i =-nv, jx+nv-1
 !	sigmaxL_star=sxxL_star-PL_star
 !	sigmaxR_star=sxxR_star-PR_star
 	
-	if (sL.ge.0)then
-		h(i,0)=0
-		h(i,1)=pL-sxxL
-		h(i,2)=(pL-sxxL)*uuL
-		h(i,3)=-4*miu/3*uuL
-		u_half(i)=uuL
-	!if (s_star.le.0)then
-	!if (s_star.ge.))then
-else if (S_star.ge.0)then
+!	if (sL.ge.u(i))then
+!		h(i,0)=0
+!		h(i,1)=pL-sxxL
+!		h(i,2)=(pL-sxxL)*uuL
+!		h(i,3)=-4*miu/3*uuL
+!		u_half(i)=uuL
+!	!if (s_star.le.0)then
+!	!if (s_star.ge.))then
+!else if (S_star.ge.u(i))then
+!		h(i,0)=0
+!		h(i,1)=pL_star-sxxL_star
+!		h(i,2)=(pL_star-sxxL_star)*s_star
+!		h(i,3)=-4*miu/3*s_star
+!		u_half(i)=s_star
+!	else if (SR.ge.u(i))then
+!		h(i,0)=0
+!		h(i,1)=pR_star-sxxR_star
+!		h(i,2)=(pR_star-sxxR_star)*s_star
+!		h(i,3)=-4*miu/3*s_star
+!		u_half(i)=s_star
+!	else
+!		h(i,0)=0
+!		h(i,1)=pR-sxxR
+!		h(i,2)=(pR-sxxR)*uuR
+!		h(i,3)=-4*miu/3*uuR
+!		u_half(i)=uuR
+!	endif
+ if (S_star.ge.0)then
 		h(i,0)=0
 		h(i,1)=pL_star-sxxL_star
 		h(i,2)=(pL_star-sxxL_star)*s_star
-		h(i,3)=-4*miu/3*s_star
+		h(i,3)=-4.d0*miu/3*s_star
 		u_half(i)=s_star
-	else if (SR.ge.0)then
+	else 
 		h(i,0)=0
 		h(i,1)=pR_star-sxxR_star
 		h(i,2)=(pR_star-sxxR_star)*s_star
-		h(i,3)=-4*miu/3*s_star
+		h(i,3)=-4.d0*miu/3*s_star
 		u_half(i)=s_star
-	else
-		h(i,0)=0
-		h(i,1)=pR-sxxR
-		h(i,2)=(pR-sxxR)*uuR
-		h(i,3)=-4*miu/3*uuR
-		u_half(i)=uuR
 	endif
+
+! if (S_star.le.u(i))then
+!		h(i,0)=0
+!		h(i,1)=pL-sxxL
+!		h(i,2)=(pL-sxxL)*uuL
+!		h(i,3)=-4.d0*miu/3*s_star
+!		u_half(i)=s_star
+!	else 
+!		h(i,0)=0
+!		h(i,1)=pR-sxxR
+!		h(i,2)=(pR-sxxR)*uuR
+!		h(i,3)=-4.d0*miu/3*s_star
+!		u_half(i)=s_star
+!	endif
+
 enddo
 
 endsubroutine

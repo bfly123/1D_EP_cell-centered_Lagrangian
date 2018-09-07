@@ -19,14 +19,14 @@ subroutine bound_Piston_problem(u4)
          
 !×ó±ß½ç  
 	   DO I=-nv,-1
-		rho=u(-i,0)
-	  uu=u(-i,1)/rho
-	  p = (u(-i,2)/rho- 0.5*uu**2)*rho0*gamma0+rho0*a0**2*f_eta(rho)
+		rho=u(0,0)
+	  uu=u(0,1)/rho
+	  p = (u(0,2)/rho- 0.5*uu**2)*rho0*gamma0+rho0*a0**2*f_eta(rho)
 	  uu=u2
 	  u(i,0)=rho
 	  u(i,1)=uu*rho
       U(i,2)=(p-rho0*a0**2*f_eta(rho))/(rho0*gamma0)*rho0+0.5d0*rho*uu*uu
-	  u(i,3)=u(-i,3)
+	  u(i,3)=0 !u(0,3)
 
    	   enddo
     
