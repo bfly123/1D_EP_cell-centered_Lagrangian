@@ -7,7 +7,7 @@ double precision A(0:3,0:3)
 double precision AR1(4,4)
 double precision AL(0:3,0:3)
 double precision AL1(4,4)
-double precision  rho,uu,p,sxx,f_eta_eta,cc,a2, gamma1,b1,h,phi2,f_eta,s2,c2,ei,ee,ee1
+double precision  rho,uu,p,sxx,f_eta_eta,cc,a2, gamma1,b1,h,phi2,f_eta,s2,c2,ei,ee,ee1,p_d
 integer i,j,info,k,m
 
 
@@ -17,14 +17,18 @@ integer i,j,info,k,m
 	  ei=ee-0.5*uu**2 !e
 	  ee1=ei-0.5d0*uu**2
 	  p = ei*rho0*gamma0+rho0*a0**2*f_eta(rho)
-
 	  sxx=u(3)
+	  gamma1=gamma0*rho0/rho
+
 	  a2=a0**2 *f_eta_eta(rho)  !+ p/rho**2 *rho0 *gamma0
-	  s2=a2+ p/rho**2 *rho0 *gamma0-rho0/rho**2*gamma0*sxx
+!	  write(*,*)a2
+!	  a2=p_d(rho) !+ p/rho**2 *rho0 *gamma0
+!	  write(*,*)a2
+!	  pause
+	  s2=a2+ (p-sxx)/rho**2*rho0*gamma0
 	  c2=s2+4.d0/3*miu/rho
 	  !cc=sqrt(a2-rho0/rho**2*gamma0*sxx+4.d0/3*miu/rho)
-	  cc=sqrt(c2)
-	  gamma1=gamma0*rho0/rho
+	  cc=dsqrt(c2)
 
 	  b1=a2-gamma1 *ee 
 	  h=ee + (p - sxx)/rho
@@ -41,9 +45,9 @@ integer i,j,info,k,m
 	  Ar(2,1)= 1.d0
 	  Ar(3,1)= 0.d0
 
-      Ar(0,2)= 1.d0/phi2
-	  Ar(1,2)= 1.d0/phi2 *(uu-cc)
-	  Ar(2,2)= 1.d0/phi2*(h-uu*cc)
+      Ar(0,2)= 1.d0/(s2-c2)
+	  Ar(1,2)= 1.d0/(s2-c2) *(uu-cc)
+	  Ar(2,2)= 1.d0/(s2-c2)*(h-uu*cc)
 	  Ar(3,2)= 1.d0
 
       Ar(0,3)= 1.d0/phi2
@@ -99,6 +103,17 @@ A=0
 !pause
 
 	end
-
+!
+!function p_d(dens)
+!	use global_cont
+!	implicit none
+!	double precision p_d,dens,d0
+!	d0=rho0
+!
+!        p_d = (-2*a0**2*d0*(-1 + dens/d0)*(dens/d0 - ((-1 + dens/d0)*gamma0)/2.)*(1/d0 - s0/d0))/(dens/d0 - (-1 + dens/d0)*s0)**3 +      &
+!              (a0**2*d0*(-1 + dens/d0)*(1/d0 - gamma0/(2.*d0)))/(dens/d0 - (-1 + dens/d0)*s0)**2 +                                      &
+!              (a0**2*(dens/d0 - ((-1 + dens/d0)*gamma0)/2.))/(dens/d0 - (-1 + dens/d0)*s0)**2
+!		  !return p_d
+!1 end
 
 

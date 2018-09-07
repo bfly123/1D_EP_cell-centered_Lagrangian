@@ -18,7 +18,7 @@ double precision u_half(-nv:jx+nv)
 double precision  rho,uu,p,f_eta
 integer kind_split
 
-kind_split =5
+kind_split =4
 
 select case(kind_split) 
 case(1)
@@ -123,8 +123,9 @@ case (3)
 	enddo
 	enddo
 call output1(ul)	
-pause
+!pause
 !	  read(*,*)i
+	!call  HLLC_EP(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
 	call  HLLC_EP(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
 !	u_half(:)=u4(:,1)/u4(:,0)
 	case(5)

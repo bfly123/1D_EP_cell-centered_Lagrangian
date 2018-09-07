@@ -1,4 +1,4 @@
-subroutine HLLC_EP(nv,jx,u,ul,ur,h,u_half)
+subroutine HLLC_EP(nv,jx,ul,ur,h,u_half)
 	  use global_cont
 	  implicit none
 	  double precision  f_eta,fgamma 
@@ -44,6 +44,12 @@ do i =-nv, jx+nv-1
 
 	  sL=min(uuL-cL,uuR-cR)
 	  sR=max(uuL+cL,uuR+cR)
+
+
+	  U_hhl(:)=(sr*ur(i,:)-sL*ul(i,:)+F_L(:)-FR(:))/(sr-sl)
+
+
+
      s_barStar = (sxxR-sxxL)/(rhoL*(sL-uuL)-rhoR*(sR-uuR))
     sxxL_bar=sxxL+rhoL*(sL-uuL)*s_barStar
 	sxxR_bar=sxxR+rhoR*(sR-uuR)*s_barStar
