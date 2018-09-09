@@ -5,6 +5,7 @@ use global
 implicit none
 integer i,j,k
 double precision f_eta,dx,p
+double precision ue(0:3)
 
 		Y0=9.d7
 		rho0=8930
@@ -40,10 +41,17 @@ double precision f_eta,dx,p
     do i=-nv,jx+nv
 	!if (i>10)then
 			x(i)=i*dx 
-	        U(i,0)=rho1
-            U(i,1)=rho1*u1
-            U(i,2)=(p1-rho0*a0**2*f_eta(rho1))/(rho0*gamma0)*rho1+0.5d0*rho1*u1*u1
-			U(i,3)=0
+	    !    U(i,0)=rho1
+        !    U(i,1)=rho1*u1
+        !    U(i,2)=(p1-rho0*a0**2*f_eta(rho1))/(rho0*gamma0)*rho1+0.5d0*rho1*u1*u1
+		!	U(i,3)=0
+			ue(0)=rho1
+			ue(1)=u1
+			ue(2)=p1
+			ue(3)=sxx1
+			call trans_ue_to_u(ue, u(i,:))
+        !    U(i,0)=rho1
+
 	!	else 
 	!ji!		x(i)=i*dx 
        !     U(i,0)=rho2

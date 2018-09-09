@@ -8,40 +8,28 @@ subroutine HLLC_EP(nv,jx,u,ul,ur,h,u_half)
 	  double precision ur(-nv:jx+nv,0:3)
 	  double precision h(-nv:jx+nv,0:3)
 	  double precision u_half(-nv:jx+nv)
+	  double precision ue(0:3),FL(0:3),FR(0:3),u_hll(0:3)
 
 	  double precision rhoL,uuL,sxxL,pL,cL,sL,sxxL_bar,sxxL_star,sxL_star,pL_star,sigmaxL_star
 	  double precision rhoR,uuR,sxxR,pR,cR,sR,sxxR_bar,sxxR_star,sxR_star,pR_star,sigmaxR_star
-	  double precision s_barStar,feta,feta1,feta_eta,a_squre,s_star,f_eta_eta,a2,s2,c2,p_d
+	  double precision s_barStar,feta,feta1,feta_eta,a_squre,s_star,f_eta_eta
 
 do i =-nv, jx+nv-1
-	  rhoL= ul(i,0)
-	  uuL = ul(i,1)/rhoL
-	  sxxL= ul(i,3)
-	  feta = f_eta(rhoL)
-	  pL = (ul(i,2)/rhoL- 0.5*uuL**2)*rho0*gamma0+rho0*a0**2*feta
-	  feta_eta=f_eta_eta(rhoL)
+
+	 call trans_u_to_ue(ul(i,:),ue(:))
+	  rhoL= ue(0)
+	  uuL = ue(1)
+	  pL =  ue(2)
+	  sxxL= ue(3)
+	 call sound(ue,cL)
+
+	 call trans_u_to_ue(uR(i,:),ue(:))
+	  rhoR= ue(0)
+	  uuR = ue(1)
+	  pR =  ue(2)
+	  sxxR= ue(3)
+	  call sound(ue,cR)
 	  
-!	 a2=p_d(rhoL)
-!	  s2=a2+ (pL-sxxL)/rhoL**2*rho0*gamma0
-!	  c2=s2+4.d0/3*miu/rhoL
-!	  cL=dsqrt(c2)
-! write(*,*) cL
-
-	  a_squre=a0**2 *feta_eta + pL/rhoL**2 *rho0 *gamma0
-	  cL=sqrt(a_squre-rho0/rhoL**2*gamma0*sxxL+4.d0/3*miu/rhoL)
-! write(*,*) cL
-! pause
-
-	  rhoR= ur(i,0)
-	  uuR = ur(i,1)/rhoR
-	  feta = f_eta(rhoR)
-	  pR = (ur(i,2)/rhoR-0.5*uuR**2)*rho0*gamma0+rho0*a0**2*feta
-	  sxxR= ur(i,3)
-
-	  feta_eta=f_eta_eta(rhoR)
-	  a_squre=a0 **2 *feta_eta + pR/rhoR**2 *rho0 *gamma0
-	  cR=sqrt(a_squre-rho0/rhoR**2*sxxR*gamma0+4.d0/3*miu/rhoR)
-
 	  sL=min(uuL-cL,uuR-cR)
 	  sR=max(uuL+cL,uuR+cR)
      s_barStar = (sxxR-sxxL)/(rhoL*(sL-uuL)-rhoR*(sR-uuR))
@@ -89,7 +77,7 @@ do i =-nv, jx+nv-1
 !		h(i,3)=-4*miu/3*uuR
 !		u_half(i)=uuR
 !	endif
- if (S_star.ge.0)then
+ if (S_star.ge.u(i))then
 		h(i,0)=0
 		h(i,1)=pL_star-sxxL_star
 		h(i,2)=(pL_star-sxxL_star)*s_star
@@ -102,6 +90,74 @@ do i =-nv, jx+nv-1
 		h(i,3)=-4.d0*miu/3*s_star
 		u_half(i)=s_star
 	endif
+
+! if (S_star.le.u(i))then
+!		h(i,0)=0
+!		h(i,1)=pL-sxxL
+!		h(i,2)=(pL-sxxL)*uuL
+!		h(i,3)=-4.d0*miu/3*s_star
+!		u_half(i)=s_star
+!	else 
+!		h(i,0)=0
+!		h(i,1)=pR-sxxR
+!		h(i,2)=(pR-sxxR)*uuR
+!		h(i,3)=-4.d0*miu/3*s_star
+!		u_half(i)=s_star
+!	endif
+
+enddo
+
+endsubroutine
+
+subroutine HLL_EP(nv,jx,u,ul,ur,h,u_half)
+	  use global_cont
+	  implicit none
+	  double precision  f_eta,fgamma 
+	  integer nv,i,jx
+	  double precision u(-nv:jx+nv)
+	  double precision ul(-nv:jx+nv,0:3)
+	  double precision ur(-nv:jx+nv,0:3)
+	  double precision h(-nv:jx+nv,0:3)
+	  double precision u_half(-nv:jx+nv)
+	  double precision ue(0:3),FL(0:3),FR(0:3),u_hll(0:3)
+
+	  double precision rhoL,uuL,sxxL,pL,cL,sL
+	  double precision rhoR,uuR,sxxR,pR,cR,sR
+	  double precision rho,uu,sxx,p
+
+do i =-nv, jx+nv-1
+
+	 call trans_u_to_ue(ul(i,:),ue(:))
+	  rhoL= ue(0)
+	  uuL = ue(1)
+	  pL =  ue(2)
+	  sxxL= ue(3)
+	 call sound(ue,cL)
+	 call trans_ue_to_Feuler(ue,FL)
+
+	 call trans_u_to_ue(uR(i,:),ue(:))
+	  rhoR= ue(0)
+	  uuR = ue(1)
+	  pR =  ue(2)
+	  sxxR= ue(3)
+	  call sound(ue,cR)
+	 call trans_ue_to_Feuler(ue,FR)
+
+	  sL=min(uuL-cL,uuR-cR)
+	  sR=max(uuL+cL,uuR+cR)
+
+	  u_hll(:)=(sr*uR(i,:)-sL*uL(i,:)+FL(:)-FR(:))/(sR-sL)
+
+	  call trans_u_to_ue(u_hll,ue)
+	  rho=ue(0)
+	  uu=ue(1)
+	  p=ue(2)
+	  sxx=ue(3)
+	h(i,0)=0
+	h(i,1)=p-sxx
+	h(i,2)=(p-sxx)*uu
+	h(i,3)=-4.d0*miu/3*uu
+	u_half(i)=uu
 
 ! if (S_star.le.u(i))then
 !		h(i,0)=0

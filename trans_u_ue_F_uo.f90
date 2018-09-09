@@ -51,23 +51,21 @@ subroutine trans_ue_to_Feuler(ue,F)
 		F(3)=-4.d0*miu/3*ue(3)
 		end
 
-
-		subroutine state_e_to_p(ei,rho,p)
+		subroutine sound(ue,c)
 		use global_cont
 		implicit none 
-		double precision rho,p,f_eta,ei
+		double precision ue(0:3)
+		double precision c,rho,uu,p,sxx,a_squre,f_eta_eta
 
-		!mie-Gruneisen equation  :  p = rho0 a0^2 f(eta) +rho0 Gamma0 ei
-		p=rho0*a0**2*f_eta(rho) + rho0*Gamma0*ei
-		end
+		rho=ue(0)
+		uu=ue(1)
+		p=ue(2)
+		sxx=ue(3)
 
-		subroutine state_p_to_ei(rho,p,ei)
-		use global_cont
-		implicit none 
-		double precision rho,p,f_eta,ei
-		!mie-Gruneisen equation  :  p = rho0 a0^2 f(eta) +rho0 Gamma0 ei
-		ei=p-rho0*a0**2*f_eta(rho)/(rho0*Gamma0)
-		end
+	  a_squre=a0**2 *f_eta_eta(rho) + p/rho**2*rho0 *gamma0
+	  c=sqrt(a_squre-rho0/rho**2*gamma0*sxx+4.d0/3*miu/rho)
+	  end
+
 
 
 
