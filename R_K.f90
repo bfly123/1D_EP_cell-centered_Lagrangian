@@ -49,35 +49,35 @@
 		u(i,3) = fgamma(u(i,3))
 	!	udx1(i,3)=u(i,3)*dx
 	enddo
-	x(:)=x1(:)
+!	x(:)=x1(:)
 
 	  !*************2**********
-!    call bound(u)
-!	call space(U,f,u_half)
-!	x2(:)=3.d0/4*x(:)+1.d0/4*x1(:)+1.d0/4*dt*u_half(:)
-!
-!	do i=-nv+1,nv+jx
-!		dx= x2(i)-x2(i-1)
-!    	udx2(i,0:2)=3.d0/4*udx(i,0:2)+1.d0/4*udx1(i,0:2)-1.d0/4*dt*f(i,0:2)
-!    	udx2(i,3)=3.d0/4*udx(i,3)+1.d0/4*udx1(i,3)-1.d0/4*dt*f(i,3)/dx
-!		u(i,0:2) = udx2(i,0:2)/dx
-!    	u(i,3)=udx2(i,3)
-!!		u(i,3) = fgamma(u(i,3))
+    call bound(u)
+	call space(U,f,u_half)
+	x2(:)=3.d0/4*x(:)+1.d0/4*x1(:)+1.d0/4*dt*u_half(:)
+
+	do i=-nv+1,nv+jx
+    	udx2(i,3)=3.d0/4*udx(i,3)+1.d0/4*udx1(i,3)-1.d0/4*dt*f(i,3)/dx1(i)
+		dx1(i)= x2(i)-x2(i-1)
+    	udx2(i,0:2)=3.d0/4*udx(i,0:2)+1.d0/4*udx1(i,0:2)-1.d0/4*dt*f(i,0:2)
+    	u(i,3)=udx2(i,3)
+		u(i,0:2) = udx2(i,0:2)/dx1(i)
+		u(i,3) = fgamma(u(i,3))
 !	!	udx2(i,3)=u(i,3)*dx
-!	enddo
+	enddo
 !
 !	  !*************3**********
-!    call bound(u)
-!	call space(U,f,u_half)
-!	x(:)=1.d0/3*x(:)+2.d0/3*x2(:)+2.d0/3*dt*u_half(:)
-!	do i=-nv+1,nv+jx
-!		dx= x(i)-x(i-1)
-!    	udx(i,0:2)=1.d0/3*udx(i,0:2)+2.d0/3*udx2(i,0:2)-2.d0/3*dt*f(i,0:2)
-!    	udx(i,3)=1.d0/3*udx(i,3)+2.d0/3*udx2(i,3)-2.d0/3*dt*f(i,3)/dx
-!		u(i,:) = udx(i,:)/dx
-!    	u(i,3)=udx(i,3)
-!		u(i,3) = fgamma(u(i,3))
-!	enddo
+    call bound(u)
+	call space(U,f,u_half)
+		x(:)=1.d0/3*x(:)+2.d0/3*x2(:)+2.d0/3*dt*u_half(:)
+	do i=-nv+1,nv+jx
+    	udx(i,3)=1.d0/3*udx(i,3)+2.d0/3*udx2(i,3)-2.d0/3*dt*f(i,3)/dx1(i)
+		dx1(i)= x(i)-x(i-1)
+    	udx(i,0:2)=1.d0/3*udx(i,0:2)+2.d0/3*udx2(i,0:2)-2.d0/3*dt*f(i,0:2)
+    	u(i,3)=udx(i,3)
+		u(i,0:2) = udx(i,0:2)/dx1(i)
+		u(i,3) = fgamma(u(i,3))
+	enddo
 !
 case(1)
 

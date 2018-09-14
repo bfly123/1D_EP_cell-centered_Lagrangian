@@ -13,7 +13,7 @@ double precision f_eta,dx,p
 		a0=5328.d0
 		pi=6*dasin(0.5d0)
 		s0=1.338d0
-    nv=4
+    nv=5
     jx=800
     dlx=5.0d-2
 	dx=dlx/jx
@@ -24,7 +24,7 @@ double precision f_eta,dx,p
 
 
     TT=5.d-6
-	SF=0.1d0
+	SF=0.45d0
 !	SF=0.1d0
 
     rho2=2785d0

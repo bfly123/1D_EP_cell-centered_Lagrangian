@@ -177,3 +177,96 @@ enddo
 
 endsubroutine
 
+subroutine HLLC_EPM(nv,jx,u,ul,ur,h,u_half)
+	  use global_cont
+	  implicit none
+	  double precision  tmp
+	  integer nv,i,jx
+	  double precision u(-nv:jx+nv)
+	  double precision ul(-nv:jx+nv,0:3)
+	  double precision ur(-nv:jx+nv,0:3)
+	  double precision h(-nv:jx+nv,0:3)
+	  double precision u_half(-nv:jx+nv)
+	  double precision ue(0:3)
+
+	  double precision rhoL,rhoL_star,uuL,sxxL,pL,cL,sL,sxxL_star,pL_star,sigma_star
+	  double precision rhoR,rhoR_star,uuR,sxxR,pR,cR,sR,sxxR_star,pR_star
+	  double precision s_star,sigmaL,sigmaR
+
+do i =-nv, jx+nv-1
+	 call trans_u_to_ue(ul(i,:),ue(:))
+	  rhoL= ue(0)
+	  uuL = ue(1)
+	  pL =  ue(2)
+	  sxxL= ue(3)
+	  sigmaL=-pL+sxxL
+	 call sound(ue,cL)
+	 call trans_u_to_ue(uR(i,:),ue(:))
+	  rhoR= ue(0)
+	  uuR = ue(1)
+	  pR =  ue(2)
+	  sxxR= ue(3)
+	  sigmaR=-pR+sxxR
+
+	  call sound(ue,cR)
+	  
+	  sL=min(uuL-cL,uuR-cR)
+	  sR=max(uuL+cL,uuR+cR)
+     s_star = (sigmaL-sigmaR+rhoL*uuR*(sL-uuL)-rhoR*uuR*(sR-uuR))/(rhoL*(sL-uuL)-rhoR*(sR-uuR))
+	 rhoL_star=rhoL*(uuL-sL)/(s_star-sL)
+	 rhoR_star=rhoR*(uuR-sR)/(s_star-sR)
+
+	 tmp = 3.d0/4/miu*log(rhoL_star/rhoL)+sxxL
+
+	 if (dabs(sxxL).ge.2.d0/3*Y0) then
+		 sxxL_star=sxxL
+		else if (dabs(tmp).ge.2.d0/3*Y0) then
+		sxxL_star=sxxL
+	else
+		sxxL_star = tmp
+	endif
+
+	 tmp = 3.d0/4/miu*log(rhoR_star/rhoR)+sxxR
+ if (dabs(sxxR).ge.2.d0/3*Y0) then
+		 sxxR_star=sxxR
+		else if (dabs(tmp).ge.2.d0/3*Y0) then
+		sxxR_star=sxxR
+	else
+		sxxR_star = tmp
+	endif
+	sigma_star = sigmaL-rhoL*(sL-uuL)*(s_star-uuL)
+	pL_star=sxxL_star-sigma_star
+	pR_star=sxxR_star-sigma_star
+
+ if (S_star.ge.u(i))then
+		h(i,0)=0
+		h(i,1)=pL_star-sxxL_star
+		h(i,2)=(pL_star-sxxL_star)*s_star
+		h(i,3)=-4.d0*miu/3*s_star
+		u_half(i)=s_star
+	else 
+		h(i,0)=0
+		h(i,1)=pR_star-sxxR_star
+		h(i,2)=(pR_star-sxxR_star)*s_star
+		h(i,3)=-4.d0*miu/3*s_star
+		u_half(i)=s_star
+	endif
+
+! if (S_star.le.u(i))then
+!		h(i,0)=0
+!		h(i,1)=pL-sxxL
+!		h(i,2)=(pL-sxxL)*uuL
+!		h(i,3)=-4.d0*miu/3*s_star
+!		u_half(i)=s_star
+!	else 
+!		h(i,0)=0
+!		h(i,1)=pR-sxxR
+!		h(i,2)=(pR-sxxR)*uuR
+!		h(i,3)=-4.d0*miu/3*s_star
+!		u_half(i)=s_star
+!	endif
+
+enddo
+
+endsubroutine
+

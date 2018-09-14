@@ -32,3 +32,7 @@ double precision::pi
 double precision::s0
 end module
 
+module mymkl
+include 'mkl.fi' 
+!include  'lapack.f90'
+end module

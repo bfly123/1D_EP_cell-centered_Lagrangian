@@ -5,17 +5,20 @@ subroutine bound_Wilkins_problem(u4)
       implicit none
       integer i,j,k
       double precision u4(-nv:jx+nv,0:3) 
-      double precision  f_eta,rho,uu,p,sxx
+      double precision  f_eta,rho,uu,p,sxx,dx
 
 !ÓÒ±ß½ç
 	DO I=1,nv
+	   !dx=x(jx)-x(jx-1)
+	   !x(jx+i)=x(jx)+i*dx
         U(jx+i,:)=U(jx-i,:) 
         U(jx,1)=0
 	enddo
          
 !×ó±ß½ç  
 	   DO I=-nv,-1
-
+	   dx=x(1)-x(0)
+		!x(i)=x(0)-i*dx 
 	   rho=rho0
 	   uu=u(0,1)/rho
 	  u(i,0)=rho
