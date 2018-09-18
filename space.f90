@@ -63,8 +63,8 @@ uro=0
 	enddo
 !call output1(ul)	
 !pause
-	call  HLLC_EPM(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
-
+!call  HLLC_EP(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
+	call  HLLC_EP_new(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
 case(2)
 
 	do i=0,3
@@ -80,8 +80,9 @@ case(2)
 !call output1(ul)	
 !pause
 	  !read(*,*)i
-	call  HLLC_EPM(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
-
+	!call  HLLC_EPM(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
+	call  HLLC_EP_new(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
+	!call  HLLC_EP(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
 case (3)
 		call  LF_splitting(u4,ul,ur)
 		do i =0,3
@@ -121,8 +122,9 @@ case (3)
 !pause
 !	  read(*,*)i
 	!call  HLLC_EP(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
-	call  HLLC_EPM(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
+!	call  HLLC_EPM(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
 
+	call  HLLC_EP_new(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
 endselect
 
 

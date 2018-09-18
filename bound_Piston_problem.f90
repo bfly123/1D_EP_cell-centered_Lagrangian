@@ -29,9 +29,9 @@ subroutine bound_Piston_problem(u4)
 !      U(i,2)=(p-rho0*a0**2*f_eta(rho))/(rho0*gamma0)*rho+0.5d0*rho*uu*uu
 !	  u(i,3)=0 !u(0,3)
 	   call trans_u_to_ue(u(0,:),ue)
-	  ue(1)=u2
+		  ue(1)=u2
 	  call trans_ue_to_u(ue,u(i,:))
-	  u(i,3)= 0 !u(0,3)
+	  !u(i,3)= 0 !u(0,3)
 
    	   enddo
     

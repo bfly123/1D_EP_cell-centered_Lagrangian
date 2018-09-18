@@ -13,6 +13,7 @@ CFL	CFL.f90	/^      subroutine CFL(/;"	s
 F90	makefile	/^F90 = ifort  -mkl$/;"	m
 HLLC_EP	HLLC_EP.f90	/^subroutine HLLC_EP(/;"	s
 HLLC_EPM	HLLC_EP.f90	/^subroutine HLLC_EPM(/;"	s
+HLLC_EP_new	HLLC_EP.f90	/^subroutine HLLC_EP_new(/;"	s
 HLL_EP	HLLC_EP.f90	/^subroutine HLL_EP(/;"	s
 JX	global.f90	/^integer           JX /;"	v	module:global
 LEFT_EIGENVECTORS_1D_ep	for liuli eigenvector multiply.f90	/^subroutine LEFT_EIGENVECTORS_1D_ep(/;"	s
@@ -115,6 +116,7 @@ upwind3	upwind3.f90	/^subroutine upwind3(/;"	s
 weno3LIU_new	WENO3_new.f90	/^subroutine weno3LIU_new(/;"	s
 weno3_new	WENO3_new.f90	/^subroutine weno3_new(/;"	s
 weno3_new_change	WENO3_new.f90	/^subroutine weno3_new_change(/;"	s
+weno3_origin	WENO3_new.f90	/^subroutine weno3_origin(/;"	s
 weno5	weno5.f90	/^subroutine weno5(/;"	s
 weno5_new	WENO5_NEW.f90	/^subroutine weno5_new(/;"	s
 weno5_new_LF	WENO5_NEW_LF.f90	/^subroutine weno5_new_LF(/;"	s

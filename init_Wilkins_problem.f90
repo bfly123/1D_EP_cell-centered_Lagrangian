@@ -24,6 +24,7 @@ double precision f_eta,dx,p
 
 
     TT=5.d-6
+    !TT=1.d-6
 	SF=0.45d0
 !	SF=0.1d0
 
