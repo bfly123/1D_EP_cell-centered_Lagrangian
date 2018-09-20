@@ -21,7 +21,7 @@ double precision u_half(-nv:jx+nv)
 double precision  rho,uu,p,f_eta
 integer kind_split
 
-kind_split =2
+kind_split =1
 
 select case(kind_split) 
 case(1)

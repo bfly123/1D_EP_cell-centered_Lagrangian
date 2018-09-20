@@ -32,8 +32,8 @@ do i =-nv, jx+nv-1
 	  
 	  sL=min(uuL-cL,uuR-cR)
 	  sR=max(uuL+cL,uuR+cR)
-     s_barStar = (sxxR-sxxL)/(rhoL*(sL-uuL)-rhoR*(sR-uuR))
-    sxxL_bar=sxxL+rhoL*(sL-uuL)*s_barStar
+      s_barStar = (sxxR-sxxL)/(rhoL*(sL-uuL)-rhoR*(sR-uuR))
+      sxxL_bar=sxxL+rhoL*(sL-uuL)*s_barStar
 	sxxR_bar=sxxR+rhoR*(sR-uuR)*s_barStar
 	sxxL_star=Fgamma(sxxL_bar)
 	sxxR_star=Fgamma(sxxR_bar)
@@ -312,96 +312,91 @@ do i =-nv, jx+nv-1
 	 rhoL_star=rhoL*(uuL-sL)/(s_star-sL)
 	 rhoR_star=rhoR*(uuR-sR)/(s_star-sR)
 
-	 tmp = 3.d0/4/miu*log(rhoL_star/rhoL)+sxxL
+! if (abs(tmp).gt.2.d0/3*Y0)then
+!		write(*,*)i, abs(tmp)-2.d0/3*Y0
+!	pause
+!	endif
+
 !	 if(abs(tmp).ge.2.d0/3*Y0)then
 !		 write(*,*)i, tmp,"**********"
 !		 pause
 !	endif
 
-	 if (dabs(sxxL).ge.2.d0/3*Y0.or.abs(tmp).lt.2.d0/3*Y0) then
-		 cap_rhoL=rhoL
-		 cap_uuL=uuL
-		 cap_pL=pL
-		 cap_sxxL=sxxL
-		 cap_sigmaL=sigmaL
-	 else
-		 if(rhoL_star.ge.rhoL)then
-			cap_sxxL= 2.d0/3 *Y0
-			cap_rhoL= rhoL*exp(8.d0/9*miu*Y0-4.d0/3*miu*sxxL)
-		 else
+	 tmp =-4.d0/3*miu*log(rhoL_star/rhoL)+sxxL
+
+	 if (dabs(sxxL).lt.2.d0/3*Y0.and.abs(tmp).ge.2.d0/3*Y0) then
+		if(tmp.ge.2.d0/3*Y0)then
+		cap_sxxL=2.d0/3 *Y0
+		cap_rhoL=rhoL*exp(-Y0/miu/2+3.d0/4*sxxL/miu)
+		else if(tmp.le.-2.d0/3*Y0)then
 			cap_sxxL=-2.d0/3 *Y0
-			cap_rhoL= rhoL*exp(-8.d0/9*miu*Y0-4.d0/3*miu*sxxL)
+			cap_rhoL= rhoL*exp(Y0/miu/2+3.d0/4*sxxL/miu)
 		endif
 		tmp1= rhoL*cap_rhoL/(cap_rhoL-rhoL) 
 		c1=1/rho0/gamma0
 		c2=a0**2/gamma0
 		cap_pL=(2*tmp1*(c2*f_eta(cap_rhoL)+eL)-(sigmaL+cap_sxxL))/(2*tmp1*c1-1)
 		cap_sigmaL=-cap_pL+cap_sxxL
-		 if(rhoL_star.ge.rhoL)then
+		if(rhoL_star.ge.rhoL)then
 			 cap_uuL=uuL+sqrt((sigmaL-cap_sigmaL)/tmp1)
 		else
 			 cap_uuL=uuL-sqrt((sigmaL-cap_sigmaL)/tmp1)
 		endif
-
-!		 write(*,*)i, cap_pL,pL 
-!		 pause
-	endif
-    
-	rhoL=cap_rhoL
-	uuL=cap_uuL
-	pL=cap_pL
-	sxxL=cap_sxxL
-	sigmaL=cap_sigmaL
-
-	ue(0)=rhoL
-	ue(1)=uuL
-	ue(2)=pL
-	ue(3)=sxxL
+		rhoL=cap_rhoL
+		uuL=cap_uuL
+		pL=cap_pL
+		sxxL=cap_sxxL
+		sigmaL=cap_sigmaL
+		ue(0)=rhoL
+		ue(1)=uuL
+		ue(2)=pL
+		ue(3)=sxxL
 	call sound(ue,cL)
+	endif
+	
 
-	 tmp = 3.d0/4/miu*log(rhoR_star/rhoR)+sxxR
+!	 if (abs(tmp).gt.2.d0/3*Y0)then
+!		write(*,*)i, abs(tmp)-2.d0/3*Y0
+!	pause
+!	endif
 
-	 if (dabs(sxxR).ge.2.d0/3*Y0.or.abs(tmp).lt.2.d0/3*Y0) then
-		 cap_rhoR=rhoR
-		 cap_uuR=uuR
-		 cap_pR=pR
-		 cap_sxxR=sxxR
-		 cap_sigmaR=sigmaR
-	 else
-		 if(rhoR_star.ge.rhoR)then
+
+	 tmp =-4.d0/3*miu*log(rhoR_star/rhoR)+sxxR
+	 if (dabs(sxxR).lt.2.d0/3*Y0.and.abs(tmp).ge.2.d0/3*Y0) then
+		 !write(*,*) i,"******"
+		 !pause
+		 if(tmp.ge.2.d0/3*Y0)then
 			cap_sxxR= 2.d0/3 *Y0
-			cap_rhoR= rhoR*exp(8.d0/9*miu*Y0-4.d0/3*miu*sxxR)
-		 else
+			cap_rhoR= rhoR*exp(-Y0/miu/2+3.d0/4*sxxR/miu)
+		else if(tmp.le.-2.d0/3*Y0)then
 			cap_sxxR=-2.d0/3 *Y0
-			cap_rhoR= rhoR*exp(-8.d0/9*miu*Y0-4.d0/3*miu*sxxR)
+			cap_rhoR= rhoR*exp(Y0/miu/2+3.d0/4*sxxR/miu)
 		endif
 		tmp1= rhoR*cap_rhoR/(cap_rhoR-rhoR) 
 		c1=1/rho0/gamma0
 		c2=a0**2/gamma0
 		cap_pR=(2*tmp1*(c2*f_eta(cap_rhoR)+eR)-(sigmaR+cap_sxxR))/(2*tmp1*c1-1)
 		cap_sigmaR=-cap_pR+cap_sxxR
-		 if(rhoR_star.ge.rhoR)then
-			 cap_uuR=uuR-sqrt((sigmaR-cap_sigmaR)/tmp1)
+		if(rhoR_star.ge.rhoR)then
+			cap_uuR=uuR-sqrt((sigmaR-cap_sigmaR)/tmp1)
 		else
-			 cap_uuR=uuR+sqrt((sigmaR-cap_sigmaR)/tmp1)
+			cap_uuR=uuR+sqrt((sigmaR-cap_sigmaR)/tmp1)
 		endif
-
 !		 write(*,*)i, cap_pR,pR 
 !		 pause
-	endif
+		rhoR=cap_rhoR
+		uuR=cap_uuR
+		pR=cap_pR
+		sxxR=cap_sxxR
+		sigmaR=cap_sigmaR
+		ue(0)=rhoR
+		ue(1)=uuR
+		ue(2)=pR
+		ue(3)=sxxR
+		call sound(ue,cR)
+endif
 
-	rhoR=cap_rhoR
-	uuR=cap_uuR
-	pR=cap_pR
-	sxxR=cap_sxxR
-	sigmaR=cap_sigmaR
-
-	ue(0)=rhoR
-	ue(1)=uuR
-	ue(2)=pR
-	ue(3)=sxxR
-	call sound(ue,cR)
-
+	
 	sL=min(uuL-cL,uuR-cR)
 	sR=max(uuL+cL,uuR+cR)
 
@@ -411,22 +406,29 @@ do i =-nv, jx+nv-1
  rhoR_star=rhoR*(uuR-sR)/(s_star-sR)
 
 
- if (dabs(sxxL).ge.2.d0/3*Y0) then
-		 sxxL_star=sxxL
-		else
-		sxxL_star=3.d0/4/miu*log(rhoL_star/rhoL)+sxxL
-	endif
-if (dabs(sxxR).ge.2.d0/3*Y0) then
-		 sxxR_star=sxxR
-		else 
-		sxxR_star=3.d0/4/miu*log(rhoR_star/rhoR)+sxxR
-	endif
+	tmp=-4.d0/3*miu*log(rhoL_star/rhoL)+sxxL
+ if (tmp.ge.2.d0/3*Y0) then
+	 sxxL_star=  2.d0/3*Y0
+ else if(tmp.le.-2.d0/3*Y0)then
+	 sxxL_star= -2.d0/3*Y0
+ else
+	 sxxL_star=tmp
+endif
+
+	tmp= -4.d0/3*miu*log(rhoR_star/rhoR)+sxxR
+ if (tmp.ge.2.d0/3*Y0) then
+	 sxxR_star=2.d0/3*Y0
+ else if(tmp.le.-2.d0/3*Y0)then
+	 sxxR_star=-2.d0/3*Y0
+ else
+	 sxxR_star=tmp
+endif
 
 	sigma_star = sigmaL-rhoL*(sL-uuL)*(s_star-uuL)
 	pL_star=sxxL_star-sigma_star
 	pR_star=sxxR_star-sigma_star
 
- if (S_star.ge.u(i))then
+	if (S_star.ge.u(i))then
 		h(i,0)=0
 		h(i,1)=pL_star-sxxL_star
 		h(i,2)=(pL_star-sxxL_star)*s_star
