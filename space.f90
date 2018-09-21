@@ -40,12 +40,12 @@ case(1)
 !	ux=uo
    
 	do i=0,3
-	call  WENO3_new(nv,jx,ux(:,i),ulx(:,i),urx(:,i))
+	!call  WENO3_new(nv,jx,ux(:,i),ulx(:,i),urx(:,i))
 	!call  WENO3_origin(nv,jx,ux(:,i),ulx(:,i),urx(:,i))
-	!call  WENO3_new_change(nv,jx,x,ux(:,i),ulx(:,i),urx(:,i))
+	call  WENO3_new_change(nv,jx,x,ux(:,i),ulx(:,i),urx(:,i))
 !	call  WENO5_new(nv,jx,ux(:,i),ulx(:,i),urx(:,i))
 	!call upwind(nv,jx,ux(:,i),ulx(:,i),urx(:,i))
-!	call upwind(nv,jx,uo(:,i),ulo(:,i),uro(:,i))
+!	call upwind(nv,jx,ux(:,i),ulx(:,i),urx(:,i))
 	enddo
 	
 ulo=0
@@ -82,7 +82,7 @@ case(2)
 	  !read(*,*)i
 	!call  HLLC_EPM(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
 	call  HLLC_EP_new(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
-	!call  HLLC_EP(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
+!	call  HLLC_EP(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
 case (3)
 		call  LF_splitting(u4,ul,ur)
 		do i =0,3
@@ -121,10 +121,10 @@ case (3)
 !call output1(ul)	
 !pause
 !	  read(*,*)i
-	!call  HLLC_EP(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
+call  HLLC_EP(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
 !	call  HLLC_EPM(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
 
-	call  HLLC_EP_new(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
+!	call  HLLC_EP_new(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
 endselect
 
 

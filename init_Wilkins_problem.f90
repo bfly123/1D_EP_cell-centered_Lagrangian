@@ -23,6 +23,7 @@ double precision f_eta,dx,p
     u=0
 
 
+    !TT=5.d-6
     TT=5.d-6
     !TT=1.d-6
 	SF=0.45d0
@@ -34,7 +35,8 @@ double precision f_eta,dx,p
 	sxx2=0
     
     rho1=2785d0
-    u1=800.d0
+    !u1=800.d0
+    u1=50.d0
     p1=1.d-6
     sxx1=0
 

@@ -149,8 +149,8 @@ subroutine weno3_new_change(nv,jx,x,F,HL,HR)
 			 w2=e2/(e1+e2)
 			 w1=e1/(e1+e2)
 
-                w3=w1/(ss+b1)
-                w4=w2/(ss+b2)
+                w3=w1/(ss+b1)**2
+                w4=w2/(ss+b2)**2
 				 w1= w3/(w4+w3)
 				 w2= w4/(w4+w3)
                 hl(i)= w1*q1+w2*q2

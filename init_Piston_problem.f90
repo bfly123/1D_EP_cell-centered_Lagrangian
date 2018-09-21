@@ -26,10 +26,11 @@ double precision ue(0:3)
 
 
     TT=1.5d-4
-	SF=0.05d0
+	SF=0.45d0
 
     rho2=8930d0
-    u2=20.d0
+    !u2=20.d0
+    u2=5.d0
     p2=1.d5
 	sxx2=0
     

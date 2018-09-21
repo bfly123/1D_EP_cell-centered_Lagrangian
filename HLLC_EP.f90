@@ -2,7 +2,7 @@ subroutine HLLC_EP(nv,jx,u,ul,ur,h,u_half)
 	  use global_cont
 	  implicit none
 	  double precision  f_eta,fgamma 
-	  integer nv,i,jx
+	  integer nv,i,jx,j
 	  double precision u(-nv:jx+nv)
 	  double precision ul(-nv:jx+nv,0:3)
 	  double precision ur(-nv:jx+nv,0:3)
@@ -273,7 +273,7 @@ subroutine HLLC_EP_new(nv,jx,u,ul,ur,h,u_half)
 	  use global_cont
 	  implicit none
 	  double precision  tmp,tmp1
-	  integer nv,i,jx
+	  integer nv,i,jx,j
 	  double precision u(-nv:jx+nv)
 	  double precision ul(-nv:jx+nv,0:3)
 	  double precision ur(-nv:jx+nv,0:3)
@@ -325,22 +325,28 @@ do i =-nv, jx+nv-1
 	 tmp =-4.d0/3*miu*log(rhoL_star/rhoL)+sxxL
 
 	 if (dabs(sxxL).lt.2.d0/3*Y0.and.abs(tmp).ge.2.d0/3*Y0) then
+!		 write(*,*) i,"left"
+!		 write(*,*) rhoL,uuL,pL,sxxL
+!		 write(*,*) i,"star"
+!		 write(*,*) rhoL_star,rhoR_star,s_star
+
 		if(tmp.ge.2.d0/3*Y0)then
-		cap_sxxL=2.d0/3 *Y0
+		cap_sxxL=2.d0/3*Y0
 		cap_rhoL=rhoL*exp(-Y0/miu/2+3.d0/4*sxxL/miu)
 		else if(tmp.le.-2.d0/3*Y0)then
-			cap_sxxL=-2.d0/3 *Y0
+			cap_sxxL=-2.d0/3*Y0
 			cap_rhoL= rhoL*exp(Y0/miu/2+3.d0/4*sxxL/miu)
 		endif
-		tmp1= rhoL*cap_rhoL/(cap_rhoL-rhoL) 
+		!tmp1= rhoL*cap_rhoL/(cap_rhoL-rhoL) 
+		tmp1=1/rhoL-1/cap_rhoL
 		c1=1/rho0/gamma0
 		c2=a0**2/gamma0
-		cap_pL=(2*tmp1*(c2*f_eta(cap_rhoL)+eL)-(sigmaL+cap_sxxL))/(2*tmp1*c1-1)
+		cap_pL=(2*(c2*f_eta(cap_rhoL)+eL)-tmp1*(sigmaL+cap_sxxL))/(2*c1-tmp1)
 		cap_sigmaL=-cap_pL+cap_sxxL
 		if(rhoL_star.ge.rhoL)then
-			 cap_uuL=uuL+sqrt((sigmaL-cap_sigmaL)/tmp1)
+			 cap_uuL=uuL-sqrt((sigmaL-cap_sigmaL)*tmp1)
 		else
-			 cap_uuL=uuL-sqrt((sigmaL-cap_sigmaL)/tmp1)
+			 cap_uuL=uuL+sqrt((sigmaL-cap_sigmaL)*tmp1)
 		endif
 		rhoL=cap_rhoL
 		uuL=cap_uuL
@@ -352,6 +358,8 @@ do i =-nv, jx+nv-1
 		ue(2)=pL
 		ue(3)=sxxL
 	call sound(ue,cL)
+	!write(*,*)ue(:)
+!	pause
 	endif
 	
 
@@ -363,24 +371,26 @@ do i =-nv, jx+nv-1
 
 	 tmp =-4.d0/3*miu*log(rhoR_star/rhoR)+sxxR
 	 if (dabs(sxxR).lt.2.d0/3*Y0.and.abs(tmp).ge.2.d0/3*Y0) then
-		 !write(*,*) i,"******"
-		 !pause
+	!	 write(*,*) i,"******"
+	!	 write(*,*) rhoR,uuR,pR,sxxR
+	!	 pause
 		 if(tmp.ge.2.d0/3*Y0)then
-			cap_sxxR= 2.d0/3 *Y0
+			cap_sxxR= 2.d0/3*Y0
 			cap_rhoR= rhoR*exp(-Y0/miu/2+3.d0/4*sxxR/miu)
 		else if(tmp.le.-2.d0/3*Y0)then
-			cap_sxxR=-2.d0/3 *Y0
+			cap_sxxR=-2.d0/3*Y0
 			cap_rhoR= rhoR*exp(Y0/miu/2+3.d0/4*sxxR/miu)
 		endif
-		tmp1= rhoR*cap_rhoR/(cap_rhoR-rhoR) 
+		!tmp1= rhoR*cap_rhoR/(cap_rhoR-rhoR) 
+		tmp1= 1/rhoR-1/cap_rhoR 
 		c1=1/rho0/gamma0
 		c2=a0**2/gamma0
-		cap_pR=(2*tmp1*(c2*f_eta(cap_rhoR)+eR)-(sigmaR+cap_sxxR))/(2*tmp1*c1-1)
+		cap_pR=(2*(c2*f_eta(cap_rhoR)+eR)-tmp1*(sigmaR+cap_sxxR))/(2*c1-tmp1)
 		cap_sigmaR=-cap_pR+cap_sxxR
 		if(rhoR_star.ge.rhoR)then
-			cap_uuR=uuR-sqrt((sigmaR-cap_sigmaR)/tmp1)
+			cap_uuR=uuR+sqrt((sigmaR-cap_sigmaR)*tmp1)
 		else
-			cap_uuR=uuR+sqrt((sigmaR-cap_sigmaR)/tmp1)
+			cap_uuR=uuR-sqrt((sigmaR-cap_sigmaR)*tmp1)
 		endif
 !		 write(*,*)i, cap_pR,pR 
 !		 pause
@@ -394,6 +404,10 @@ do i =-nv, jx+nv-1
 		ue(2)=pR
 		ue(3)=sxxR
 		call sound(ue,cR)
+!	write(*,*)ue(:)
+		 !pause
+!		 j=i
+!	pause
 endif
 
 	
@@ -408,9 +422,9 @@ endif
 
 	tmp=-4.d0/3*miu*log(rhoL_star/rhoL)+sxxL
  if (tmp.ge.2.d0/3*Y0) then
-	 sxxL_star=  2.d0/3*Y0
+	 sxxL_star=2.d0/3*Y0
  else if(tmp.le.-2.d0/3*Y0)then
-	 sxxL_star= -2.d0/3*Y0
+	 sxxL_star=-2.d0/3*Y0
  else
 	 sxxL_star=tmp
 endif
@@ -427,6 +441,10 @@ endif
 	sigma_star = sigmaL-rhoL*(sL-uuL)*(s_star-uuL)
 	pL_star=sxxL_star-sigma_star
 	pR_star=sxxR_star-sigma_star
+!	if(i==j)then
+!		write(*,*)j,pL_star,pR_star,sxxL_star,sxxR_star,s_star
+!		pause
+!	endif
 
 	if (S_star.ge.u(i))then
 		h(i,0)=0
