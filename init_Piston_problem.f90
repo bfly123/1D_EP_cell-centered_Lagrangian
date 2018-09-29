@@ -29,8 +29,8 @@ double precision ue(0:3)
 	SF=0.45d0
 
     rho2=8930d0
-    !u2=20.d0
-    u2=5.d0
+    u2=10.d0
+    !u2=2.d0
     p2=1.d5
 	sxx2=0
     

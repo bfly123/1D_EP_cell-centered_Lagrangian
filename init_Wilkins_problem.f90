@@ -14,7 +14,7 @@ double precision f_eta,dx,p
 		pi=6*dasin(0.5d0)
 		s0=1.338d0
     nv=5
-    jx=400
+    jx=200
     dlx=5.0d-2
 	dx=dlx/jx
     allocate(U(-nv:jx+nv,0:3))
@@ -35,8 +35,8 @@ double precision f_eta,dx,p
 	sxx2=0
     
     rho1=2785d0
-    !u1=800.d0
-    u1=50.d0
+    u1=800.d0
+    !u1=50.d0
     p1=1.d-6
     sxx1=0
 

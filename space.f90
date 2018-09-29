@@ -63,8 +63,8 @@ uro=0
 	enddo
 !call output1(ul)	
 !pause
-!call  HLLC_EP(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
-	call  HLLC_EP_new(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
+call  HLLC_EP(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
+!	call  HLLC_EP_new(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
 case(2)
 
 	do i=0,3
