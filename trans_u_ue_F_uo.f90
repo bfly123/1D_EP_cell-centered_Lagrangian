@@ -12,6 +12,24 @@ subroutine trans_u_to_ue(u,ue)
 		ue(3)=u(3)
 		end
 
+subroutine trans_du_to_due(u,du,due)
+	  !use global_cont
+	  implicit none
+	  double precision u(0:3)
+	  double precision du(0:3)
+	  double precision ue(0:3)
+	  double precision due(0:3)
+	  double precision f_eta,ei,dei
+
+		call trans_u_to_ue(u,ue)
+		due(0)=du(0)
+		due(1)=du(1)/u(0)-u(1)*du(0)/u(0)**2
+		ei=u(2)/u(0)-0.5d0*ue(1)**2
+		dei=du(2)/u(0)- u(2)/u(0)*du(0)-ue(1)*due(1)
+		call state_de_to_dp(dei,u(0),du(0),due(2)) !p=p(e,rho)
+		due(3)=du(3)
+		end
+
 
 subroutine trans_ue_to_u(ue,u)
 	  use global_cont

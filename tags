@@ -8,9 +8,11 @@
 80	output1.f90	/^80    continue$/;"	l	subroutine:Output1	file:
 83	output.f90	/^83    format(D20.10,D20.10,D20.10,D20.10,D20.10,D20.10)$/;"	l	subroutine:Output	file:
 83	output1.f90	/^83    format(D20.10,D20.10,D20.10,D20.10,D20.10)$/;"	l	subroutine:Output1	file:
+ADER	AWER.f90	/^ subroutine ADER(/;"	s
 Bin	makefile	/^Bin = main.exe$/;"	m
 CFL	CFL.f90	/^      subroutine CFL(/;"	s
 F90	makefile	/^F90 = ifort  -mkl$/;"	m
+HLLC_EP	HLL.f90	/^subroutine HLLC_EP(/;"	s
 HLLC_EP	HLLC_EP.f90	/^subroutine HLLC_EP(/;"	s
 HLLC_EPM	HLLC_EP.f90	/^subroutine HLLC_EPM(/;"	s
 HLLC_EP_new	HLLC_EP.f90	/^subroutine HLLC_EP_new(/;"	s
@@ -83,6 +85,7 @@ init_two_blast_waves	init_two_blast.f90	/^subroutine init_two_blast_waves$/;"	s
 kind_problem	global.f90	/^integer           kind_problem /;"	v	module:global
 main	Main.f90	/^program main$/;"	p
 main	main.f90	/^program main$/;"	p
+material_derivative	material_derivative.f90	/^subroutine material_derivative(/;"	s
 miu	global.f90	/^double precision::miu$/;"	v	module:global_cont
 multiply2x1	for liuli eigenvector multiply.f90	/^subroutine multiply2x1(/;"	s
 mymkl	global.f90	/^module mymkl$/;"	m
@@ -94,6 +97,7 @@ reverse	reverse.f90	/^subroutine reverse(/;"	s
 rho0	global.f90	/^double precision::rho0$/;"	v	module:global_cont
 rho1	global.f90	/^double precision rho1 /;"	v	module:init_tran
 rho2	global.f90	/^double precision rho2 /;"	v	module:init_tran
+rho_sxx	R_K.f90	/^subroutine rho_sxx(/;"	s
 s0	global.f90	/^double precision::s0$/;"	v	module:global_cont
 sound	trans_u_ue_F_uo.f90	/^		subroutine sound(/;"	s
 source	makefile	/^source = global.f90 fun.f90 bound_choose.f90   bound_Wilkins_problem.f90  bound_Piston_problem.f90  CFL.f90  init_Wilkins_problem.f90 init_Piston_problem.f90  initial.f90  Main.f90 output.f90  R_K.f90 space.f90 timesolve.f90  upwind.f90  HLLC_EP.f90 WENO5_NEW.f90 WENO5_NEW_LF.f90 LF_splitting.f90 eigen_var.f90 reverse.f90 output1.f90WENO3_new.f90 upwind3.f90 trans_u_ue_F_uo.f90 stateEOS.f90$/;"	m
@@ -103,6 +107,7 @@ state_p_to_ei	stateEOS.f90	/^		subroutine state_p_to_ei(/;"	s
 sxx1	global.f90	/^double precision sxx1$/;"	v	module:init_tran
 sxx2	global.f90	/^double precision sxx2$/;"	v	module:init_tran
 timesolve	timesolve.f90	/^subroutine timesolve$/;"	s
+trans_du_to_due	trans_u_ue_F_uo.f90	/^subroutine trans_du_to_due(/;"	s
 trans_u_to_ue	trans_u_ue_F_uo.f90	/^subroutine trans_u_to_ue(/;"	s
 trans_ue_to_FLagrangian	trans_u_ue_F_uo.f90	/^subroutine trans_ue_to_FLagrangian(/;"	s
 trans_ue_to_Feuler	trans_u_ue_F_uo.f90	/^subroutine trans_ue_to_Feuler(/;"	s

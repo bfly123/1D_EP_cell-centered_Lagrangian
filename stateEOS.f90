@@ -2,9 +2,16 @@
 		use global_cont
 		implicit none 
 		double precision rho,p,f_eta,ei
-
 		!mie-Gruneisen equation  :  p = rho0 a0^2 f(eta) +rho0 Gamma0 ei
 		p=rho0*a0**2*f_eta(rho) + rho0*Gamma0*ei
+		end
+
+		subroutine  state_de_to_dp(dei,rho,drho,dp) !p=p(e,rho)
+		use global_cont
+		implicit none 
+		double precision rho,p,f_eta,dei,dp
+		!mie-Gruneisen equation  :  p = rho0 a0^2 f(eta) +rho0 Gamma0 ei
+		dp=a0**2*f_eta_eta(rho)*drho+rho0*Gamma0*dei
 		end
 
 		subroutine state_p_to_ei(rho,p,ei)
@@ -14,6 +21,7 @@
 		!mie-Gruneisen equation  :  p = rho0 a0^2 f(eta) +rho0 Gamma0 ei
 		ei=(p-rho0*a0**2*f_eta(rho))/(rho0*Gamma0)
 		end
+
 
 	function f_eta(rho)
 	  use global_cont
