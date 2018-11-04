@@ -1,4 +1,4 @@
- subroutine ADER(dt)
+ .subroutine ADER(dt)
 	  using global
 	  implicit none
 	  integer i,j,k
@@ -11,7 +11,6 @@
 		urho(i)=u(i,0)
 	enddo
 
-	  call space_ADER(U,f,u_half)
 
 	  call material_derivative(U,dU_dt,pU_px)
 
