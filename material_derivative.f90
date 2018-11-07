@@ -1,4 +1,4 @@
-subroutine material_derivative(U,dU_dt,U1)
+subroutine material_derivative(U,pU_px,du_dt)
 use global_cont
 use global
 implicit none
