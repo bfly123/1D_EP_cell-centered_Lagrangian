@@ -9,7 +9,7 @@
 		subroutine  state_de_to_dp(dei,rho,drho,dp) !p=p(e,rho)
 		use global_cont
 		implicit none 
-		double precision rho,p,f_eta,dei,dp
+		double precision rho,p,f_eta_eta,dei,dp,drho
 		!mie-Gruneisen equation  :  p = rho0 a0^2 f(eta) +rho0 Gamma0 ei
 		dp=a0**2*f_eta_eta(rho)*drho+rho0*Gamma0*dei
 		end
@@ -41,4 +41,11 @@
 	  f_eta_eta= (eta+(s0-gamma0)*(eta-1))/(eta-s0*(eta-1))**3
 	  end function
 
+	 function f_eta_eta_eta(rho)
+	 use global_cont
+	 implicit none
+	 double precision rho,f_eta_eta_eta,eta
+	  eta=rho/rho0
+	  f_eta_eta_eta=((1+s0-gamma0)*(eta-s0*(eta-1))-3.d0*(1-s0)*(eta+(s0-gamma0)*(eta-1)))/(eta-s0*(eta-1))**4
+	  end function
 

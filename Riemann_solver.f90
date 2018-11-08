@@ -1,11 +1,10 @@
-subroutine  Reimann_solver(uL,uR,pUL_px,pUR_px,U1,pu_px)
+subroutine  Riemann_solver(nv,jx,U,uL,uR,pUL_px,pUR_px,U1,pu_px)
 	!  use global
 	  use global_cont
 	  implicit none
-	  integer i,j,k
-	  double precision  tmp,nv,jx
-
-	  !double precision u(-nv:jx+nv)
+	  integer i,j,k,nv,jx
+	  double precision  tmp
+	  double precision u(-nv:jx+nv)
 	  double precision ul(-nv:jx+nv,0:3)
 	  double precision ur(-nv:jx+nv,0:3)
 	  double precision h(-nv:jx+nv,0:3)
@@ -87,7 +86,7 @@ do i =-nv, jx+nv-1
 
  do j=1,2
 	pu_px(i,:,j) = (sR*puR_px(i,:,j) -sL*puL_px(i,:,j)+ &
-				 matmul(A,puL_px(i,:,j)) - matmul(A,puR_px(i,:,j)))/(sR-sL)
+				 matmul(A,puL_px(i,:,j))- matmul(A,puR_px(i,:,j)))/(sR-sL)
  enddo
 
 enddo

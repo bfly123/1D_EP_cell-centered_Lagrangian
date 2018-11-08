@@ -6,8 +6,11 @@
 	  double precision dx1(-nv:jx+nv)
 	  double precision uL(-nv:jx+nv,0:3)
 	  double precision uR(-nv:jx+nv,0:3)
+	  double precision f(-nv:jx+nv,0:3)
+	  double precision udx(-nv:jx+nv,0:3)
 
 	  double precision u1(-nv:jx+nv,0:3)
+	  double precision uug(-nv:jx+nv)
 	  double precision puR_px(-nv:jx+nv,0:3)
 	  double precision puL_px(-nv:jx+nv,0:3)
 	  double precision pu_px(-nv:jx+nv,0:3)
@@ -23,13 +26,9 @@
 		call subcell_WENO3(nv,jx,dx1(1),u(:,i),uL(:,i),uR(:,i),pUL_px(:,i,:),pUR_px(:,i,:))
 	enddo
 
-	call Reimann_solver(uL,uR,pUL_px,pUR_px,U1,pu_px(:,:,1:2))
+	call Riemann_solver(nv,jx,U(:,1)/U(:,0),uL,uR,pUL_px,pUR_px,U1,pu_px(:,:,1:2))
 
 	call material_derivative(U1,pU_px,dU_dt)  
-
-
-	call trans_U_to_ue(U1,ue)
-	call trans_ue_to_FLagrangian(U1,F)
 
 	call Gauss(U1,dU_dt,F,uug)
 
