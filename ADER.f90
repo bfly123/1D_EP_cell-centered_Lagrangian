@@ -11,37 +11,65 @@
 
 	  double precision u1(-nv:jx+nv,0:3)
 	  double precision uug(-nv:jx+nv)
-	  double precision puR_px(-nv:jx+nv,0:3)
-	  double precision puL_px(-nv:jx+nv,0:3)
-	  double precision pu_px(-nv:jx+nv,0:3)
+	  double precision puR_px(-nv:jx+nv,0:3,3)
+	  double precision puL_px(-nv:jx+nv,0:3,3)
+	  double precision pu_px(-nv:jx+nv,0:3,3)
 	  double precision du_dt(-nv:jx+nv,0:3,3)
+	  double precision src(-nv:jx+nv,0:3)
+	  double precision ue(0:3)
+	  double precision dt,fgamma
 
-   call bound(u)
+    call bound(u)
 	do i=-nv+1,nv+jx
 		dx1(i)= x(i)-x(i-1)
     	udx(i,0:2)=u(i,0:2)*dx1(i)
 	enddo
 
 	do i = 0,3
-		call subcell_WENO3(nv,jx,dx1(1),u(:,i),uL(:,i),uR(:,i),pUL_px(:,i,:),pUR_px(:,i,:))
+	call subcell_WENO3(nv,jx,dx1(2),u(:,i),uL(:,i),uR(:,i),pUL_px(:,i,:),pUR_px(:,i,:))
+
+	call source(t,src)
+		!call  WENO3_new(nv,jx,U(:,i), uL(:,i),uR(:,i))
 	enddo
 
-	call Riemann_solver(nv,jx,U(:,1)/U(:,0),uL,uR,pUL_px,pUR_px,U1,pu_px(:,:,1:2))
+call Riemann_solver(nv,jx,U(:,1)/U(:,0),uL,uR,pUL_px,pUR_px,U1,pu_px(:,:,1:2))
 
-	call material_derivative(U1,pU_px,dU_dt)  
+!call  HLLC_EP_new(nv,jx,u(:,1)/u(:,0),ul,ur,F,uug)
 
-	call Gauss(U1,dU_dt,F,uug)
+call material_derivative(U1,pU_px,dU_dt)  
+
+!F=F*dt
+!uug=uug*dt
+call Gauss(U1,dt,dU_dt,F,uug)
+!	do i = -nv,jx+nv
+!	call trans_u_to_ue(U1(i,:),ue(:))
+!	call trans_ue_to_FLagrangian(ue(:),F(i,:))
+!	F=F*dt
+!	enddo
+!	uug(:)= U1(:,1)/u1(:,0)*dt
+
+!uug=uug*dt
+
+	!call output1(F)
 
 	x=x+ uug 
 
-	U(:,3) = U(:,3) + f(:,3)/dx1(:)
-
-	udx(:,0:2) = udx(:,0:2)+f(:,0:2)
+	do i=-nv+1,jx+nv-1
+		U(i,3) = U(i,3) - (F(i,3)-F(i-1,3))/dx1(i)
+		udx(i,0:2) = udx(i,0:2) - F(i,0:2)+F(i-1,0:2)
+		u(i,3) = fgamma(u(i,3))
+	enddo
 
 	do i =-nv,jx+nv
-	dx1(i)=x(i)- x(i-1)
+		dx1(i)=x(i)- x(i-1)
 	enddo
-	U(:,0:2) = Udx(:,0:2)/dx1(:)
+
+	do i=-nv+1,nv+jx
+		U(i,0:2) = Udx(i,0:2)/dx1(i)
+	enddo
+	!call output
+
+	!pause
  end
 
 

@@ -14,7 +14,7 @@ integer ti
       t=t+dt
       write(*,*)'T=',T,'dt=',dt
 	  ti=ti+1
-!	  call R_K(dt)
+	  !call R_K(dt)
 	  call ADER(dt)
 
 !stop

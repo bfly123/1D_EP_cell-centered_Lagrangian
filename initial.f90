@@ -16,8 +16,8 @@ implicit none
         call init_Wilkins_problem
     case(2)
         call init_Piston_problem 
-    !case(4)
-    !   call init_two_blast_waves
+    case(4)
+       call init_
     !case(5)
     !    call init_boundreflect
     !case(6)

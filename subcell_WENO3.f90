@@ -37,7 +37,7 @@ subroutine subcell_WENO3(nv,jx,dx,u,uL,uR,pUL,pUR)
 
 	  u2= b0*(3*u(i)-u(i-1))/2+b1*(u(i)+u(i+1))/2
 
-	  d0=u(i)
+	  d0=u1
 	  d1= 6*u(i)-2*u2-4*u1
 	  d2=3*(u1+u2-2*u(i))
 

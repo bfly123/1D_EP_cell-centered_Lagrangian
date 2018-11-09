@@ -53,7 +53,7 @@ subroutine trans_ue_to_FLagrangian(ue,F)
 		F(0)=0
 		F(1)=ue(2)-ue(3)
 		F(2) = F(1)*ue(1) 
-		F(3)=-4.d0*miu/3*ue(3)
+		F(3)=-4.d0*miu/3*ue(1)
 		end
 subroutine trans_ue_to_Feuler(ue,F)
 	  use global_cont
