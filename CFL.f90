@@ -7,13 +7,14 @@
 	  double precision rho,feta,uu,sxx,p,feta1,feta_eta,a_squre,c,f_eta,f_eta_eta
       
 	  dxmin=x(1)-x(0)
-      do i=0,Jx+1
-		  
+
+      do i=0,Jx
 	  dx=x(i)-x(i-1)
 
 	  rho= u(i,0)
 	  feta = f_eta(rho)
 	  uu = u(i,1)/rho
+
 	  sxx=u(i,3)
 	  p = (u(i,2)/rho- 0.5*uu**2)*rho0*gamma0+rho0*a0**2*feta
 	  feta_eta=f_eta_eta(rho)
