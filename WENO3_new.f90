@@ -5,7 +5,7 @@ subroutine weno3_new(nv,jx,F,HL,HR)
                    q30,q31,q32,aa0,aa1,aa2,w0,w1,w2
  integer  n,nv,jx,i
  double precision hl(-nv:nv+jx),hr(-nv:nv+jx),f(-nv:nv+jx)
-         SS=1E-8
+         SS=1E-20
         
         do i=-1,jx+1
              

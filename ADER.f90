@@ -25,13 +25,16 @@
 	  double precision AR(-nv:jx+nv,0:3,0:3)
 	  double precision src(-nv:jx+nv,0:3)
 	  double precision ue(0:3)
+	  double precision ue1(-nv:jx+nv,0:3)
 	  double precision dt,fgamma,t
 
-    call bound(u)
+	call bound(u)
 	do i=-nv+1,nv+jx
 		dx1(i)= x(i)-x(i-1)
     	udx(i,0:2)=u(i,0:2)*dx1(i)
 	enddo
+	 
+	!call source1(t,src)
 
 		do i=-nv,jx+nv
 			call trans_u_to_ue(u(i,:),uo(i,:))
@@ -41,30 +44,37 @@
 		enddo
 
 
-
 	do i = 0,3
-!	call subcell_WENO3(nv,jx,dx1(2),u(:,i),uL(:,i),uR(:,i),pUL_px(:,i,:),pUR_px(:,i,:))
-
-	!	call  WENO3_new(nv,jx,U(:,i), uL(:,i),uR(:,i))
-call  WENO3_new(nv,jx,ux(:,i),ulx(:,i),urx(:,i))
-!	call  upwind(nv,jx,U(:,i), uL(:,i),uR(:,i))
+		call subcell_WENO3(nv,jx,dx1(3),ux(:,i),uLx(:,i),uRx(:,i),pUL_px(:,i,:),pUR_px(:,i,:))
+!	call WENO5_new(nv,jx,U(:,i),uL(:,i),uR(:,i))
+!	call  WENO3_new(nv,jx,U(:,i), uL(:,i),uR(:,i))
+!call  WENO3_new_change(nv,jx,x,u(:,i),ul(:,i),ur(:,i))
+!	call  upwind(nv,jx,U(:,i),uL(:,i),uR(:,i))
 	enddo
 
 	do i=-nv,jx+nv
 		ulo(i,:)= matmul(AR(i,:,:),ulx(i,:))
 		uro(i,:)= matmul(AR(i,:,:),urx(i,:))
 	enddo
-   
-	do i=-nv,jx+nv
-		call trans_ue_to_u(ulo(i,:),ul(i,:))
-		call trans_ue_to_u(uro(i,:),ur(i,:))
-	enddo
-
+!   
+	!do i=-nv,jx+nv
+	!	call trans_ue_to_u(ulo(i,:),ul(i,:))
+	!	call trans_ue_to_u(uro(i,:),ur(i,:))
+	!enddo
+!
 !src = 0
 
-call Riemann_solver(nv,jx,U(:,1)/U(:,0),uL,uR,pUL_px,pUR_px,U1,pu_px(:,:,1:2))
+call HLLC_EP_new_origin(nv,jx,Ue(:,1),uLo,uRo,U1) !,pUL_px(:,:,1:2),pUR_px(:,:,1:2),U1,pu_px(:,:,1:2))
+!do i=-nv,jx+nv
+!call trans_u_to_ue(ul(i,:),ue1(i,:))
+!enddo
 
-!call  HLLC_EP(nv,jx,u(:,1)/u(:,0),ul,ur,F,uug)
+
+!call  HLLC_EP_new(nv,jx,u(:,1)/u(:,0),ul,ur,F,uug)
+
+!call output1(F)
+
+!pause
 
 call material_derivative(U1,pU_px,dU_dt)  
 
@@ -81,12 +91,13 @@ call Gauss(U1,t,dt,dU_dt,F,uug,src)
 !uug=uug*dt
 
 	!call output1(F)
+	!F =0
 
 	x=x+ uug 
 
 	do i=-nv+1,jx+nv-1
 		U(i,3) = U(i,3) - (F(i,3)-F(i-1,3))/dx1(i) + src(i,3)
-		udx(i,0:2) = udx(i,0:2) - F(i,0:2)+F(i-1,0:2)+src(i,0:2)*dx1(i)
+		udx(i,0:2) = udx(i,0:2)-F(i,0:2)+F(i-1,0:2)  +src(i,0:2)*dx1(i)
 		u(i,3) = fgamma(u(i,3))
 	enddo
 

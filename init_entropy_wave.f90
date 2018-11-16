@@ -1,4 +1,4 @@
-subroutine init_accuracy_test
+subroutine init_entropy_wave
 use init_tran
 use global_cont
 use global
@@ -7,7 +7,7 @@ integer i,j,k
 double precision f_eta,dx,p,a,s,e0,b
 double precision ue(0:3)
 
-		Y0=9.d10
+		Y0=0
 		rho0=8930
 		gamma0=2.d0
 		miu=4.5d10
@@ -21,7 +21,7 @@ double precision ue(0:3)
 		b=0.1
 
     nv=4
-    jx=50
+    jx=120
     dlx=1.0
 	dx=dlx/jx
     allocate(U(-nv:jx+nv,0:3))
@@ -31,15 +31,16 @@ double precision ue(0:3)
 
 
     TT=0.01d0
-	SF=0.05d0
+	SF=0.2d0
 
     do i=-nv,jx+nv
 	!if (i>10)then
 			x(i)=i*dx 
 			u(i,0)= rho0*(1-b*sin(2*pi*x(i)))
+			e0=(1.1d0-f_eta(u(i,0)))*a0**2 /gamma0
 			u(i,1) = u(i,0)* a 
 			u(i,2)= (e0+0.5d0*a**2)*u(i,0)
-			u(i,3)= s*sin(2*pi*x(i))
+			u(i,3)= 0
 	enddo
 end 
 

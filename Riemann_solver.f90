@@ -1,4 +1,5 @@
 subroutine  Riemann_solver(nv,jx,U,uL,uR,pUL_px,pUR_px,U1,pu_px)
+!subroutine  Riemann_solver(nv,jx,U,uL,uR,h,u_half)
 	!  use global
 	  use global_cont
 	  implicit none
@@ -18,28 +19,28 @@ subroutine  Riemann_solver(nv,jx,U,uL,uR,pUL_px,pUR_px,U1,pu_px)
 	  double precision cap_rhoR,cap_uuR,cap_sxxR,cap_pR,cap_sigmaR
 	  double precision cap_rhoL,cap_uuL,cap_sxxL,cap_pL,cap_sigmaL
 	  double precision s_star,sigmaL,sigmaR,c1,c2,f_eta
-	  double precision pu_px(-nv:jx+nv,0:3,3)
-	  double precision puL_px(-nv:jx+nv,0:3,3)
-	  double precision puR_px(-nv:jx+nv,0:3,3)
+	  double precision pu_px(-nv:jx+nv,0:3,2)
+	  double precision puL_px(-nv:jx+nv,0:3,2)
+	  double precision puR_px(-nv:jx+nv,0:3,2)
 
 do i =-nv, jx+nv-1
-	 call trans_u_to_ue(ul(i,:),ue(:))
-	  rhoL= ue(0)
-	  uuL = ue(1)
-	  pL =  ue(2)
-	  sxxL= ue(3)
+!	 call trans_u_to_ue(ul(i,:),ue(:))
+	  rhoL= uL(i,0)
+	  uuL = uL(i,1)
+	  pL =  uL(i,2)
+	  sxxL= uL(i,3)
 	  sigmaL=-pL+sxxL
-	 call state_p_to_ei(rhoL,pL,eL)
-	 call sound(ue,cL)
+	 !call state_p_to_ei(rhoL,pL,eL)
+	 call sound(uL(i.:),cL)
 
-	 call trans_u_to_ue(uR(i,:),ue(:))
-	  rhoR= ue(0)
-	  uuR = ue(1)
-	  pR =  ue(2)
-	  sxxR= ue(3)
+	 !call trans_u_to_ue(uR(i,:),ue(:))
+	  rhoR= uR(i,0)
+	  uuR = uR(i,1)
+	  pR =  uR(i,2)
+	  sxxR= uR(i,3)
 	  sigmaR=-pR+sxxR
-	  call state_p_to_ei(rhoR,pR,eR)
-	  call sound(ue,cR)
+	  !call state_p_to_ei(rhoR,pR,eR)
+	  call sound(uR(i,:),cR)
 	  
 	  sL=min(uuL-cL,uuR-cR)
 	  sR=max(uuL+cL,uuR+cR)
@@ -153,8 +154,8 @@ endif
 
     s_star = (sigmaL-sigmaR+rhoL*uuL*(sL-uuL)-rhoR*uuR*(sR-uuR))/(rhoL*(sL-uuL)-rhoR*(sR-uuR))
 
- rhoL_star=rhoL*(uuL-sL)/(s_star-sL)
- rhoR_star=rhoR*(uuR-sR)/(s_star-sR)
+	rhoL_star=rhoL*(uuL-sL)/(s_star-sL)
+	rhoR_star=rhoR*(uuR-sR)/(s_star-sR)
 
 
 	tmp=-4.d0/3*miu*log(rhoL_star/rhoL)+sxxL
@@ -183,6 +184,21 @@ endif
 !		pause
 !	endif
 
+
+!	if (S_star.ge.u(i))then
+!		h(i,0)=0
+!		h(i,1)=pL_star-sxxL_star
+!		h(i,2)=(pL_star-sxxL_star)*s_star
+!		h(i,3)=-4.d0*miu/3*s_star
+!		u_half(i)=s_star
+!	else 
+!		h(i,0)=0
+!		h(i,1)=pR_star-sxxR_star
+!		h(i,2)=(pR_star-sxxR_star)*s_star
+!		h(i,3)=-4.d0*miu/3*s_star
+!		u_half(i)=s_star
+!	endif
+
  if (S_star.ge.u(i))then
 	    ue(0)= rhoL_star
 		ue(1)= s_star
@@ -196,10 +212,12 @@ endif
 	    ue(3)= sxxR_star
 	endif
  call trans_ue_to_u(ue,u1(i,:))
+! call trans_ue_to_FLagrangian(ue,h(i,:))
+!	u_half(i) = s_star
 
 
  !*************solve pu_px with a HLL****************
- call trans_ue_A(U1(i,:), ue, A)
+ call trans_ue_Ae(ue, A)
 
  do j=1,2
 	pu_px(i,:,j) = (sR*puR_px(i,:,j) -sL*puL_px(i,:,j)+ &

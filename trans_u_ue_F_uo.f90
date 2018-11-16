@@ -25,7 +25,7 @@ subroutine trans_du_to_due(u,du,due)
 		due(0)=du(0)
 		due(1)=du(1)/u(0)-u(1)*du(0)/u(0)**2
 		ei=u(2)/u(0)-0.5d0*ue(1)**2
-		dei=du(2)/u(0)- u(2)/u(0)*du(0)-ue(1)*due(1)
+		dei=du(2)/u(0)- u(2)/u(0)**2*du(0)-ue(1)*due(1)
 		call state_de_to_dp(dei,u(0),du(0),due(2)) !p=p(e,rho)
 		due(3)=du(3)
 		end

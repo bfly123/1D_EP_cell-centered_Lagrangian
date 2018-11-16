@@ -32,8 +32,8 @@ do i=-nv,jx+nv
 	call  trans_du_to_due(U1(i,0:3),pu_pt(0:3,1),pue_pt)  !**********\partial U/\parttial t to \partial U_e/\partial t
 	call  trans_du_to_due(U1(i,0:3),pu_px(i,0:3,1),pue_px) 
 	
-	call trans_ue_dA(U1(i,0:3),Ue,pUe_pt,pA_pt)
-	call trans_ue_dA(U1(i,0:3),Ue,pUe_px,pA_px)
+	call trans_ue_dA(U1(i,0:3),Ue,pU_pt(0:3,1),pUe_pt,pA_pt)
+	call trans_ue_dA(U1(i,0:3),Ue,pU_px(i,0:3,1),pUe_px,pA_px)
 	
 	A_pA_px=matmul(A,pA_px)
 
@@ -47,8 +47,9 @@ do i=-nv,jx+nv
 	puu_pt=pUe_pt(1)
 	puu_px=pUe_px(1)
 	
-	dU_dt(i,0:3,1) = pU_pt(0:3,1)+uu*pU_px(i,0:3,1)
-	dU_dt(i,0:3,2) = pU_pt(0:3,2)+puu_pt*pU_px(i,0:3,1)+2*uu*pU2_pxt(0:3)+uu*puu_px*pU_px(i,0:3,1)+uu**2*pU_px(i,0:3,2)
+	!dU_dt(i,0:3,1) = pU_pt(0:3,1)+uu*pU_px(i,0:3,1)
+	dU_dt(i,0:3,1) = pU_pt(0:3,1) !+uu*pU_px(i,0:3,1)
+	dU_dt(i,0:3,2) = pU_pt(0:3,2) !+puu_pt*pU_px(i,0:3,1)+2*uu*pU2_pxt(0:3)+uu*puu_px*pU_px(i,0:3,1)+uu**2*pU_px(i,0:3,2)
 
 enddo
 
@@ -93,12 +94,55 @@ subroutine trans_ue_A(u,ue,A)
 	A(3,3)=uu
 	end
 
+subroutine trans_ue_Ae(ue,Ae)
+	use global_cont
+	implicit none
+	double precision Ae(0:3,0:3)
+	double precision u(0:3),ue(0:3)
+	double precision rho,uu,p,sigma_x,sxx,c
 
-subroutine trans_ue_dA(u,ue,due,dA)
+	rho=ue(0)
+	uu=ue(1)
+	p=ue(2)
+	sxx=ue(3)
+	call sound(ue,c)
+
+	Ae(0,0) = uu 
+	Ae(0,1) = rho
+	Ae(0,2) = 0
+	Ae(0,3) = 0
+
+
+	Ae(1,0) = 0 
+	Ae(1,1) = uu
+	Ae(1,2) = 1.d0/rho
+	Ae(1,3) = -1.d0/rho 
+
+
+	Ae(2,0) = 0 
+	Ae(2,1) = rho*c**2-rho0/rho*gamma0*sxx
+	Ae(2,2) = uu
+	Ae(2,3) = 0
+
+	Ae(3,0) = 0 
+	Ae(3,1) = -4.d0/3*miu
+	Ae(3,2) = 0
+	Ae(3,3) = uu
+
+	end
+
+
+
+
+
+
+
+
+subroutine trans_ue_dA(u,ue,du,due,dA)
 use global_cont
 implicit none
 double precision dA(0:3,0:3)
-double precision ue(0:3),due(0:3),u(0:3)
+double precision ue(0:3),due(0:3),u(0:3),du(0:3)
 double precision rho,uu,p,sigma_x,sxx,ei,p_rho,gamma
 double precision drho,duu,dp,dsigma,dsxx,dei,dgamma,dE,E
 	double precision f_eta_eta,f_eta_eta_eta
@@ -111,6 +155,8 @@ double precision drho,duu,dp,dsigma,dsxx,dei,dgamma,dE,E
 
 
 	E=u(2)/u(0)
+
+	dE=du(2)/u(0)-u(2)/u(0)**2*du(0)
 
 	ei=E-0.5*uu**2 !e
 	gamma=gamma0*rho0/rho

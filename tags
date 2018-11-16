@@ -24,7 +24,7 @@ LF_con_var	LF_con_var.f90	/^subroutine LF_con_var(/;"	s
 LF_splitting	LF_splitting.f90	/^subroutine LF_splitting(/;"	s
 LF_splitting	splitting.f90	/^subroutine LF_splitting(/;"	s
 MKL_AL_AR	reverse.f90	/^subroutine MKL_AL_AR(/;"	s
-Objects	makefile	/^Objects = global.o fun.o bound_choose.o  bound_Wilkins_problem.o  bound_Piston_problem.o CFL.o bound_accuracy_test.o  init_Wilkins_problem.o  init_Piston_problem.o init_accuracy_test.o initial.o  Main.o output.o  R_K.o space.o  timesolve.o upwind.o HLLC_EP.o  WENO5_NEW.o WENO5_NEW_LF.o LF_splitting.o eigen_var.o  reverse.o output1.o WENO3_new.o upwind3.o trans_u_ue_F_uo.o stateEOS.o subcell_WENO3.o Riemann_solver.o material_derivative.o Gauss.o ADER.o source.o$/;"	m
+Objects	makefile	/^Objects = global.o fun.o bound_choose.o  bound_Wilkins_problem.o  bound_Piston_problem.o CFL.o bound_accuracy_test.o  init_entropy_wave.o init_Wilkins_problem.o  init_Piston_problem.o init_accuracy_test.o initial.o  Main.o output.o  R_K.o space.o  timesolve.o upwind.o HLLC_EP.o  WENO5_NEW.o WENO5_NEW_LF.o LF_splitting.o eigen_var.o  reverse.o output1.o WENO3_new.o upwind3.o trans_u_ue_F_uo.o stateEOS.o subcell_WENO3.o Riemann_solver.o material_derivative.o Gauss.o ADER.o source.o$/;"	m
 Output	output.f90	/^    subroutine Output$/;"	s
 Output1	output1.f90	/^    subroutine Output1(/;"	s
 RIGHT_EIGENVECTORS_1D_ep	for liuli eigenvector multiply.f90	/^subroutine RIGHT_EIGENVECTORS_1D_ep(/;"	s
@@ -82,6 +82,7 @@ init_Piston_problem	init_Piston_problem.f90	/^subroutine init_Piston_problem$/;"
 init_Wilkins_problem	init_Wilkins_problem.f90	/^subroutine init_Wilkins_problem$/;"	s
 init_accuracy_test	init_accuracy_test.f90	/^subroutine init_accuracy_test$/;"	s
 init_boundreflect	init_boundreflect.f90	/^subroutine init_boundreflect$/;"	s
+init_entropy_wave	init_entropy_wave.f90	/^subroutine init_entropy_wave$/;"	s
 init_interface	init_interface.f90	/^subroutine init_interface$/;"	s
 init_lax_problem	init_lax_problem.f90	/^subroutine init_lax_problem$/;"	s
 init_shu_osher_problem	init_shu.f90	/^subroutine init_shu_osher_problem /;"	s
@@ -106,7 +107,7 @@ rho2	global.f90	/^double precision rho2 /;"	v	module:init_tran
 rho_sxx	R_K.f90	/^subroutine rho_sxx(/;"	s
 s0	global.f90	/^double precision::s0$/;"	v	module:global_cont
 sound	trans_u_ue_F_uo.f90	/^		subroutine sound(/;"	s
-source	makefile	/^source = global.f90 fun.f90 bound_choose.f90  bound_accuracy_test.f90  bound_Wilkins_problem.f90  bound_Piston_problem.f90 init_accuracy_test.f90  CFL.f90  init_Wilkins_problem.f90 init_Piston_problem.f90  initial.f90  Main.f90 output.f90  R_K.f90 space.f90 timesolve.f90  upwind.f90  HLLC_EP.f90 WENO5_NEW.f90 WENO5_NEW_LF.f90 LF_splitting.f90 eigen_var.f90 reverse.f90 output1.f90WENO3_new.f90 upwind3.f90 trans_u_ue_F_uo.f90 stateEOS.f90 subcell_WENO3.f90 Riemann_solver.f90 material_derivative.f90 Gauss.f90 ADER.f90 source.f90$/;"	m
+source	makefile	/^source = global.f90 fun.f90 bound_choose.f90  bound_accuracy_test.f90  bound_Wilkins_problem.f90  bound_Piston_problem.f90 init_entropy_wave.f90 init_accuracy_test.f90  CFL.f90  init_Wilkins_problem.f90 init_Piston_problem.f90  initial.f90  Main.f90 output.f90  R_K.f90 space.f90 timesolve.f90  upwind.f90  HLLC_EP.f90 WENO5_NEW.f90 WENO5_NEW_LF.f90 LF_splitting.f90 eigen_var.f90 reverse.f90 output1.f90WENO3_new.f90 upwind3.f90 trans_u_ue_F_uo.f90 stateEOS.f90 subcell_WENO3.f90 Riemann_solver.f90 material_derivative.f90 Gauss.f90 ADER.f90 source.f90$/;"	m
 space	space.f90	/^subroutine space(/;"	s
 state_de_to_dp	stateEOS.f90	/^		subroutine  state_de_to_dp(/;"	s
 state_e_to_p	stateEOS.f90	/^		subroutine state_e_to_p(/;"	s
@@ -118,6 +119,7 @@ timesolve	timesolve.f90	/^subroutine timesolve$/;"	s
 trans_du_to_due	trans_u_ue_F_uo.f90	/^subroutine trans_du_to_due(/;"	s
 trans_u_to_ue	trans_u_ue_F_uo.f90	/^subroutine trans_u_to_ue(/;"	s
 trans_ue_A	material_derivative.f90	/^subroutine trans_ue_A(/;"	s
+trans_ue_Ae	material_derivative.f90	/^subroutine trans_ue_Ae(/;"	s
 trans_ue_dA	material_derivative.f90	/^subroutine trans_ue_dA(/;"	s
 trans_ue_to_FLagrangian	trans_u_ue_F_uo.f90	/^subroutine trans_ue_to_FLagrangian(/;"	s
 trans_ue_to_Feuler	trans_u_ue_F_uo.f90	/^subroutine trans_ue_to_Feuler(/;"	s
