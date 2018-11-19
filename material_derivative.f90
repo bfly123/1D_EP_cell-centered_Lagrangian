@@ -1,59 +1,102 @@
-subroutine material_derivative(U1,pU_px,du_dt)
-use global_cont
-use global
-implicit none
-double precision U1(-nv:jx+nv,0:3)
-double precision Ue(0:3)
-double precision dU_dt(-nv:jx+nv,0:3,3)
-double precision pU_px(-nv:jx+nv,0:3,3)
-double precision pUe_px(0:3)
-double precision pUe_pt(0:3)
-double precision pU_pt(0:3,3)
-double precision pU2_pxt(0:3)
-double precision A(0:3,0:3)
-double precision A_pA_px(0:3,0:3)
-double precision A2(0:3,0:3)
-double precision pA_px(0:3,0:3)
-double precision pA_pt(0:3,0:3)
-double precision puu_pt,puu_px,uu,f_eta_eta
-integer i,j,k
+!subroutine material_derivative(U1,pU_px,du_dt)
+!use global_cont
+!use global
+!implicit none
+!double precision U1(-nv:jx+nv,0:3)
+!double precision Uo(-nv:jx+nv,0:3)
+!double precision Ue(0:3)
+!double precision dU_dt(-nv:jx+nv,0:3,3)
+!double precision pU_px(-nv:jx+nv,0:3,3)
+!double precision pUe_px(0:3)
+!double precision pUe_pt(0:3)
+!double precision pU_pt(0:3,3)
+!double precision pU2_pxt(0:3)
+!double precision A(0:3,0:3)
+!double precision A_pA_px(0:3,0:3)
+!double precision A2(0:3,0:3)
+!double precision pA_px(0:3,0:3)
+!double precision pA_pt(0:3,0:3)
+!double precision puu_pt,puu_px,uu,f_eta_eta
+!integer i,j,k
+!
+!
+!!call trans_px_to_pt(pu_px,pu_pt)
+!!call time_derivative(U_half,pU_pt,pU_px)
+!do i=-nv,jx+nv
+!
+!	call trans_u_to_Ue(U1(i,0:3),ue)
+!	call trans_ue_A(U1(i,0:3),ue,A)
+!
+!!*pU_pt=- A*pU_px
+!	Pu_pt(0:3,1)=- matmul(A,pU_px(i,0:3,1))
+!
+!	call  trans_du_to_due(U1(i,0:3),pu_pt(0:3,1),pue_pt)  !**********\partial U/\parttial t to \partial U_e/\partial t
+!	call  trans_du_to_due(U1(i,0:3),pu_px(i,0:3,1),pue_px) 
+!	
+!	call trans_ue_dA(U1(i,0:3),Ue,pU_pt(0:3,1),pUe_pt,pA_pt)
+!	call trans_ue_dA(U1(i,0:3),Ue,pU_px(i,0:3,1),pUe_px,pA_px)
+!	
+!	A_pA_px=matmul(A,pA_px)
+!
+!	A2=matmul(A,A)
+!
+!	pU2_pxt(0:3)=- matmul(pA_px,pU_px(i,0:3,1))- matmul(A,pU_px(i,0:3,2))
+!	pU_pt(0:3,2)=- matmul(pA_pt,pU_px(i,0:3,1))- matmul(A,pU2_pxt)
+!
+!	uu=Ue(1)
+!
+!	puu_pt=pUe_pt(1)
+!	puu_px=pUe_px(1)
+!	
+!	!dU_dt(i,0:3,1) = pU_pt(0:3,1)+uu*pU_px(i,0:3,1)
+!	dU_dt(i,0:3,1) = pU_pt(0:3,1) !+uu*pU_px(i,0:3,1)
+!	dU_dt(i,0:3,2) = pU_pt(0:3,2) !+puu_pt*pU_px(i,0:3,1)+2*uu*pU2_pxt(0:3)+uu*puu_px*pU_px(i,0:3,1)+uu**2*pU_px(i,0:3,2)
+!
+!enddo
+!
+!end
+
+subroutine material_derivative_try(Ue,U1,pUe,du)
+	use global_cont
+	use global
+	implicit none
+	double precision U1(-nv:jx+nv,0:3)
+	double precision Ue(-nv:jx+nv,0:3)
+	double precision pUe(-nv:jx+nv,0:3)
+	double precision dU(-nv:jx+nv,0:3)
+	double precision rho,uu,p,sxx,E,puu,pp,psxx,ei
+	integer i,j,k
+
+	do i = -nv,jx+nv
+	rho = ue(i,0)
+	uu = ue(i,1)
+	p = ue(i,2)
+	sxx = ue(i,3)
+
+	call  state_p_to_ei(rho,p ,ei)
+	E=ei+uu**2/2
+	call trans_ue_to_u(ue(i,:),u1(i,:))
+
+	puu = pue(i,1)
+	pp = pue(i,2)
+	psxx=pue(i,3)
 
 
-!call trans_px_to_pt(pu_px,pu_pt)
-!call time_derivative(U_half,pU_pt,pU_px)
-do i=-nv,jx+nv
+	dU(i,0) = -rho*puu
+	dU(i,1) = -rho*uu*puu-pp+psxx
+	dU(i,2) = -rho*E*puu-(pp-psxx)*uu-(p-sxx)*puu
+	dU(i,3) = 4.d0/3*miu*puu
 
-	call trans_u_to_Ue(U1(i,0:3),ue)
-	call trans_ue_A(U1(i,0:3),ue,A)
+	enddo
+	end
 
-!*pU_pt=- A*pU_px
-	Pu_pt(0:3,1)=- matmul(A,pU_px(i,0:3,1))
 
-	call  trans_du_to_due(U1(i,0:3),pu_pt(0:3,1),pue_pt)  !**********\partial U/\parttial t to \partial U_e/\partial t
-	call  trans_du_to_due(U1(i,0:3),pu_px(i,0:3,1),pue_px) 
-	
-	call trans_ue_dA(U1(i,0:3),Ue,pU_pt(0:3,1),pUe_pt,pA_pt)
-	call trans_ue_dA(U1(i,0:3),Ue,pU_px(i,0:3,1),pUe_px,pA_px)
-	
-	A_pA_px=matmul(A,pA_px)
 
-	A2=matmul(A,A)
 
-	pU2_pxt(0:3)=- matmul(pA_px,pU_px(i,0:3,1))- matmul(A,pU_px(i,0:3,2))
-	pU_pt(0:3,2)=- matmul(pA_pt,pU_px(i,0:3,1))- matmul(A,pU2_pxt)
 
-	uu=Ue(1)
 
-	puu_pt=pUe_pt(1)
-	puu_px=pUe_px(1)
-	
-	!dU_dt(i,0:3,1) = pU_pt(0:3,1)+uu*pU_px(i,0:3,1)
-	dU_dt(i,0:3,1) = pU_pt(0:3,1) !+uu*pU_px(i,0:3,1)
-	dU_dt(i,0:3,2) = pU_pt(0:3,2) !+puu_pt*pU_px(i,0:3,1)+2*uu*pU2_pxt(0:3)+uu*puu_px*pU_px(i,0:3,1)+uu**2*pU_px(i,0:3,2)
 
-enddo
 
-end
 
 
 subroutine trans_ue_A(u,ue,A)

@@ -3,12 +3,13 @@
 !_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
-!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+!_TAG_PROGRAM_VERSION	5.8	//
 80	output.f90	/^80    continue$/;"	l	subroutine:Output	file:
 80	output1.f90	/^80    continue$/;"	l	subroutine:Output1	file:
 83	output.f90	/^83    format(D20.10,D20.10,D20.10,D20.10,D20.10,D20.10)$/;"	l	subroutine:Output	file:
 83	output1.f90	/^83    format(D20.10,D20.10,D20.10,D20.10,D20.10)$/;"	l	subroutine:Output1	file:
 ADER	ADER.f90	/^ subroutine ADER(/;"	s
+ADER	AWER.f90	/^ subroutine ADER(/;"	s
 Bin	makefile	/^Bin = main.exe$/;"	m
 CFL	CFL.f90	/^      subroutine CFL(/;"	s
 F90	makefile	/^F90 = ifort  -mkl$/;"	m
@@ -16,6 +17,7 @@ Gauss	Gauss.f90	/^subroutine Gauss(/;"	s
 HLLC_EP	HLL.f90	/^subroutine HLLC_EP(/;"	s
 HLLC_EP	HLLC_EP.f90	/^subroutine HLLC_EP(/;"	s
 HLLC_EPM	HLLC_EP.f90	/^subroutine HLLC_EPM(/;"	s
+HLLC_EP_NEW_origin	Riemann_solver.f90	/^subroutine  HLLC_EP_NEW_origin(/;"	s
 HLLC_EP_new	HLLC_EP.f90	/^subroutine HLLC_EP_new(/;"	s
 HLL_EP	HLLC_EP.f90	/^subroutine HLL_EP(/;"	s
 JX	global.f90	/^integer           JX /;"	v	module:global
@@ -35,6 +37,8 @@ SW_splitting	splitting.f90	/^subroutine SW_splitting(/;"	s
 Source1	source.f90	/^subroutine Source1(/;"	s
 TT	global.f90	/^double precision TT /;"	v	module:global
 U	global.f90	/^double precision, allocatable::U(/;"	v	module:global
+Uo	global.f90	/^double precision, allocatable::Uo(/;"	v	module:global
+VL_splitting	VS_splitting.f90	/^subroutine  VL_splitting(/;"	s
 WENO	WENO.f90	/^SUBROUTINE WENO(/;"	s
 WENONEW	wenonew.f90	/^      SUBROUTINE WENONEW(/;"	s
 WENO_NEW	weno_new.f90	/^SUBROUTINE WENO_NEW(/;"	s
@@ -90,9 +94,9 @@ init_sod_problem	init_sod_problem.f90	/^subroutine init_sod_problem$/;"	s
 init_tran	global.f90	/^module init_tran /;"	m
 init_two_blast_waves	init_two_blast.f90	/^subroutine init_two_blast_waves$/;"	s
 kind_problem	global.f90	/^integer           kind_problem /;"	v	module:global
-main	Main.f90	/^program main$/;"	p
 main	main.f90	/^program main$/;"	p
 material_derivative	material_derivative.f90	/^subroutine material_derivative(/;"	s
+material_derivative_try	material_derivative.f90	/^subroutine material_derivative_try(/;"	s
 miu	global.f90	/^double precision::miu$/;"	v	module:global_cont
 multiply2x1	for liuli eigenvector multiply.f90	/^subroutine multiply2x1(/;"	s
 mymkl	global.f90	/^module mymkl$/;"	m

@@ -11,8 +11,8 @@ call dgetri( n, AT, n,ipiv, work, n,info)
 end
 
 subroutine MKL_AL_AR(A,AR,n)
-!	include 'mkl.fi' 
-!use   lapack95
+include 'mkl.fi' 
+use   lapack95
 !use mkl95_lapack
 !!use mymkl
 !use mkl95_precision

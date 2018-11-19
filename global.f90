@@ -7,6 +7,7 @@ double precision dLx                               !x方向计算区域长度
 double precision TT                                !计算时间
 double precision SF                                !计算时间
 double precision, allocatable::U(:,:)            !通量Ut=F
+double precision, allocatable::Uo(:,:)            !原始变量
 double precision, allocatable::X(:)
 end module
 
@@ -33,6 +34,6 @@ double precision::s0
 end module
 
 module mymkl
-include 'mkl.fi' 
+!include 'mkl.fi' 
 !include  'lapack.f90'
 end module
