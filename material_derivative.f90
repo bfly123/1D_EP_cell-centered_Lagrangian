@@ -56,7 +56,7 @@
 !
 !end
 
-subroutine material_derivative_try(Ue,U1,pUe,du)
+subroutine material_derivative_try(Ue,pUe,du)
 	use global_cont
 	use global
 	implicit none
@@ -75,7 +75,7 @@ subroutine material_derivative_try(Ue,U1,pUe,du)
 
 	call  state_p_to_ei(rho,p ,ei)
 	E=ei+uu**2/2
-	call trans_ue_to_u(ue(i,:),u1(i,:))
+!	call trans_ue_to_u(ue(i,:),u1(i,:))
 
 	puu = pue(i,1)
 	pp = pue(i,2)

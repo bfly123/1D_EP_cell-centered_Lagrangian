@@ -46,11 +46,11 @@
 		enddo
 
 	do i = 0,3
-		!call subcell_WENO3(nv,jx,dx1(3),ux(:,i),uLx(:,i),uRx(:,i),pUL_px(:,i,:),pUR_px(:,i,:))
+		call subcell_WENO3(nv,jx,dx1(3),ux(:,i),uLx(:,i),uRx(:,i),pUL_px(:,i,:),pUR_px(:,i,:))
 !	call WENO5_new(nv,jx,U(:,i),uL(:,i),uR(:,i))
 !	call  WENO3_new(nv,jx,U(:,i), uL(:,i),uR(:,i))
 !call  WENO3_new_change(nv,jx,x,u(:,i),ul(:,i),ur(:,i))
-	call  upwind(nv,jx,Ux(:,i),uLx(:,i),uRx(:,i))
+!	call  upwind(nv,jx,Ux(:,i),uLx(:,i),uRx(:,i))
 	enddo
 
 	do i=-nv,jx+nv
@@ -67,6 +67,13 @@
 
 call HLLC_EP_new_origin(nv,jx,Uo(:,1),uLo,uRo,Uoh) !,pUL_px(:,:,1:2),pUR_px(:,:,1:2),U1,pu_px(:,:,1:2))
 
+!call output1(uoh)
+!pause
+
+do i=-nv,jx+nv
+	call trans_ue_to_u(uoh(i,:),u1(i,:))
+enddo
+
 do j=1,2
 	do i=-nv,jx+nv
 		call VL_splitting(uoh(i,:),pUL_px(i,:,j),pUR_px(i,:,j),puo_px(i,:,j))
@@ -80,9 +87,6 @@ do i=-nv,jx+nv
 enddo
 
 
-!do i=-nv,jx+nv
-!call trans_u_to_ue(ul(i,:),ue1(i,:))
-!enddo
 
 
 !call  HLLC_EP_new(nv,jx,u(:,1)/u(:,0),ul,ur,F,uug)
@@ -93,7 +97,7 @@ enddo
 
 !call material_derivative(Uo,pU_px,dU_dt)  
 
-call material_derivative_try(uo,u1,pu_px,dU_dt)
+call material_derivative_try(uoh,pu_px,dU_dt)
 
 !F=F*dt
 !uug=uug*dt

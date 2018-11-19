@@ -40,7 +40,7 @@ double precision ue(0:3)
 		uo(i,0)= rho0*(1-b*sin(2*pi*x(i)))
 		uo(i,1)= a
 		uo(i,2)=1.1d0*a0**2*rho0
-		uo(i,3)=0
+		uo(i,3)=10000
 		call trans_ue_to_u(uo(i,:),u(i,:))
 	enddo
 end 

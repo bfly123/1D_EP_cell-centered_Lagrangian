@@ -23,7 +23,7 @@ subroutine Gauss(U1,t,dt,dU_dt,F,uug,src)
 
 	  call source1(t,src1)
 
-	  U2(:,:) = U1(:,:)   !   + dU_dt(:,:,1)*t1 !      + dU_dt(:,:,2)*t1**2/2  
+	  U2(:,:) = U1(:,:)      + dU_dt(:,:,1)*t1 !      + dU_dt(:,:,2)*t1**2/2  
 	  uu1(:)= U2(:,1)/U2(:,0)
 
 	  do i=-nv,jx+nv
@@ -35,7 +35,7 @@ subroutine Gauss(U1,t,dt,dU_dt,F,uug,src)
 
 	  call source1(t,src2)
 
-	  U2(:,:) = U1(:,:)  !+ dU_dt(:,:,1)*t2  ! + dU_dt(:,:,2)*t2**2/2  
+	  U2(:,:) = U1(:,:)  + dU_dt(:,:,1)*t2  ! + dU_dt(:,:,2)*t2**2/2  
 	  uu2(:)= U2(:,1)/U2(:,0)
 
 	  do i=-nv,jx+nv

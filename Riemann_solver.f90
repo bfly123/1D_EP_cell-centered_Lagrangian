@@ -290,8 +290,8 @@ do i =-nv, jx+nv-1
 
 	 tmp =-4.d0/3*miu*log(rhoL_star/rhoL)+sxxL
 
-	 !if (dabs(sxxL).lt.2.d0/3*Y0.and.abs(tmp).ge.2.d0/3*Y0) then
-	 if (abs(tmp).ge.2.d0/3*Y0) then
+	 if (dabs(sxxL).lt.2.d0/3*Y0.and.abs(tmp).ge.2.d0/3*Y0) then
+	! if (abs(tmp).ge.2.d0/3*Y0) then
 !		 write(*,*) i,"left"
 !		 write(*,*) rhoL,uuL,pL,sxxL
 !		 write(*,*) i,"star"
@@ -337,8 +337,8 @@ do i =-nv, jx+nv-1
 
 
 	 tmp =-4.d0/3*miu*log(rhoR_star/rhoR)+sxxR
-	 !if (dabs(sxxR).lt.2.d0/3*Y0.and.abs(tmp).ge.2.d0/3*Y0) then
-	 if (abs(tmp).ge.2.d0/3*Y0) then
+	if (dabs(sxxR).lt.2.d0/3*Y0.and.abs(tmp).ge.2.d0/3*Y0) then
+	! if (abs(tmp).ge.2.d0/3*Y0) then
 	!	 write(*,*) i,"******"
 	!	 write(*,*) rhoR,uuR,pR,sxxR
 	!	 pause
