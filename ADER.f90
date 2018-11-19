@@ -97,7 +97,7 @@ enddo
 
 !call material_derivative(Uo,pU_px,dU_dt)  
 
-call material_derivative_try(uoh,pu_px,dU_dt)
+call material_derivative_try(uoh,pu_px(:,:,1:2),dU_dt(:,:,1:2))
 
 !F=F*dt
 !uug=uug*dt
