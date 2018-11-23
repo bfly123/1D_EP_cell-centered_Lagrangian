@@ -5,10 +5,10 @@
     double precision rou,uu,p,f_eta,a,b,s,e0,error1,error2,rhoE,rho
     integer i,j
 
-		s= 6.d7
-		e0= 0.d-14
-		a = 1.d4
-		b=0.1
+		s= 6.d4
+		e0= 0.1
+		a = 1.d3
+		b=0.2
 
         open(1,file='result.dat',status='unknown')
       do 80 i=0,Jx       
@@ -27,17 +27,17 @@
 		error2=0
       do i=0,Jx       
 
-	  rho= rho0*(1-b*sin(2*pi*((x(i)+x(i+1))/2-a*0.01))) 
+	  rho= rho0*(1-b*sin(2*pi*((x(i)+x(i-1))/2-a*0.1))) 
 
 	  rhoE= rho*(e0+ 0.5d0*a**2)
 
 	  write(2,*) x(i),abs(u(i,0)-rho)/rho, abs(u(i,2)-rhoE)/rhoE
-	  write(3,83) (x(i)+x(i+1))/2,rho,a,rhoE, s*sin(2*pi*(x(i)-a*0.01))
+	  write(3,83) (x(i)+x(i-1))/2,rho,a,rhoE, s*sin(2*pi*(x(i)-a*0.01))
 	  if( abs(u(i,0)-rho)/rho .ge.error1)then
 		  error1= abs(u(i,0)-rho)/rho
 	  endif
-	  if( abs(u(i,2)-rhoE)/rhoE .ge.error2)then
-		  error2= abs(u(i,2)-rhoE)/rhoE
+	  if( abs(u(i,1)-a)/rhoE .ge.error2)then
+		  error2= abs(uo(i,1)-a)/a
 	  endif
 	  enddo
 	  close(2)

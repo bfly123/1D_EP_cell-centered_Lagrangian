@@ -260,7 +260,7 @@ do i =-nv, jx+nv-1
 	  pL =  uL(i,2)
 	  sxxL= uL(i,3)
 	  sigmaL=-pL+sxxL
-	 !call state_p_to_ei(rhoL,pL,eL)
+	 call state_p_to_ei(rhoL,pL,eL)
 	 call sound(uL(i,:),cL)
 
 	 !call trans_u_to_ue(uR(i,:),ue(:))
@@ -269,7 +269,7 @@ do i =-nv, jx+nv-1
 	  pR =  uR(i,2)
 	  sxxR= uR(i,3)
 	  sigmaR=-pR+sxxR
-	  !call state_p_to_ei(rhoR,pR,eR)
+	  call state_p_to_ei(rhoR,pR,eR)
 	  call sound(uR(i,:),cR)
 	  
 	  sL=min(uuL-cL,uuR-cR)

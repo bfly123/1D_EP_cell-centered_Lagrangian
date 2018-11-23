@@ -11,13 +11,15 @@ subroutine bound_accuracy_test(u4)
 !ÓÒ±ß½ç
 	DO I=1,nv
 	  uo(jx+i,:)=uo(i,:)
-	  call trans_ue_to_u(uo(jx+i,:),U(jx+i,:))
+		u(jx+i,:) = u(i,:)
+	  !call trans_ue_to_u(uo(jx+i,:),U(jx+i,:))
 	enddo
          
 !×ó±ß½ç  
 	DO I=-nv,-1
 		uo(i,:)=uo(jx+i,:)
-	  call trans_ue_to_u(uo(i,:),U(i,:))
+		u(i,:) = u(jx+i,:)
+	  !call trans_ue_to_u(uo(i,:),U(i,:))
 	enddo
 !		rho=u(0,0)
 !	  uu=u(0,1)/rho

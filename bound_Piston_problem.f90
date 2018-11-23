@@ -10,12 +10,13 @@ subroutine bound_Piston_problem(u4)
 
 !ÓÒ±ß½ç
 	DO I=1,nv
-		rho=u(jx-i,0)
-		uu=u(jx-i,1)/rho
-	  u(jx+i,0)=rho
-	  u(jx+i,1)=-uu*rho
-      U(jx+i,2)= u(jx-i,2)
-	  u(jx+i,3)=u(jx-i,3)
+	  uo(jx+i,0)=uo(jx-i,0)
+	  uo(jx+i,1)=-uo(jx-i,1)
+      Uo(jx+i,2)= uo(jx-i,2)
+	  uo(jx+i,3)=u(jx-i,3)
+
+	  call trans_Ue_to_u(uo(jx+i,:),u(jx+i,:))
+
 	enddo
          
 !×ó±ß½ç  
@@ -28,9 +29,9 @@ subroutine bound_Piston_problem(u4)
 !	  u(i,1)=uu*rho
 !      U(i,2)=(p-rho0*a0**2*f_eta(rho))/(rho0*gamma0)*rho+0.5d0*rho*uu*uu
 !	  u(i,3)=0 !u(0,3)
-	   call trans_u_to_ue(u(0,:),ue)
-		  ue(1)=u2
-	  call trans_ue_to_u(ue,u(i,:))
+		  uo(i,:)=uo(0,:)
+		  uo(i,1)=u2
+	  call trans_ue_to_u(uo(i,:),u(i,:))
 	  !u(i,3)= 0 !u(0,3)
 
    	   enddo

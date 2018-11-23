@@ -14,10 +14,11 @@ double precision f_eta,dx,p
 		pi=6*dasin(0.5d0)
 		s0=1.338d0
     nv=5
-    jx=200
+    jx=500
     dlx=5.0d-2
 	dx=dlx/jx
     allocate(U(-nv:jx+nv,0:3))
+    allocate(Uo(-nv:jx+nv,0:3))
     allocate(X(-nv:jx+nv))
     
     u=0
@@ -47,11 +48,20 @@ double precision f_eta,dx,p
             U(i,1)=rho2*u2
             U(i,2)=(p2-rho0*a0**2*f_eta(rho2))/(rho0*gamma0)*rho2+0.5d0*rho2*u2*u2
 			U(i,3)=0
+
+			uo(i,0)=rho2
+			uo(i,1)=u2
+			uo(i,2)=p2
+			uo(i,3)=0
         else
             U(i,0)=rho1
             U(i,1)=rho1*u1
             U(i,2)=(p1-rho0*a0**2*f_eta(rho1))/(rho0*gamma0)*rho1+0.5d0*rho1*u1*u1
 			U(i,3)=0
+			uo(i,0)=rho1
+			uo(i,1)=u1
+			uo(i,2)=p1
+			uo(i,3)=0
         endif
     enddo
 end 

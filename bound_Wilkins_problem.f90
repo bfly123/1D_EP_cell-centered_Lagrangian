@@ -13,6 +13,9 @@ subroutine bound_Wilkins_problem(u4)
 	   !x(jx+i)=x(jx)+i*dx
         U(jx+i,:)=U(jx-i,:) 
         U(jx,1)=0
+
+		Uo(jx+i,:)=Uo(jx-i,:)
+		Uo(jx,1)=0
 	enddo
          
 !×ó±ß½ç  
@@ -25,6 +28,11 @@ subroutine bound_Wilkins_problem(u4)
 	  u(i,1)=uu*rho
       U(i,2)=(-rho0*a0**2*f_eta(rho))/(rho0*gamma0)*rho0+0.5d0*rho*uu*uu
 	  u(i,3)=0
+
+	  uo(i,0)=rho0
+	  uo(i,1)=uu
+	  uo(i,2)=0
+	  uo(i,3)=0
 
 	   enddo
     

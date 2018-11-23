@@ -9,7 +9,7 @@ implicit none
     !case 2 Piston problem
     !case 3 lax_problem
     !case 4 two_blast
-  kind_problem =5
+  kind_problem =4
   select case(kind_problem) 
     
     case(1)

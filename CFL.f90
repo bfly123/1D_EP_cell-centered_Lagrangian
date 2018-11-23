@@ -11,15 +11,17 @@
       do i=0,Jx
 	  dx=x(i)-x(i-1)
 
-	  rho= u(i,0)
-	  feta = f_eta(rho)
-	  uu = u(i,1)/rho
+	  rho= uo(i,0)
+	  !feta = f_eta(rho)
+	  uu = uo(i,1)
 
-	  sxx=u(i,3)
-	  p = (u(i,2)/rho- 0.5*uu**2)*rho0*gamma0+rho0*a0**2*feta
-	  feta_eta=f_eta_eta(rho)
-	  a_squre=a0**2 *feta_eta + p/rho**2 *rho0 *gamma0
-	  c=sqrt(a_squre-rho0/rho**2*gamma0*sxx+4.d0/3*miu/rho)
+	  sxx=uo(i,3)
+	  p = uo(i,2) !(u(i,2)/rho- 0.5*uu**2)*rho0*gamma0+rho0*a0**2*feta
+
+	  call sound(uo(i,:),c)
+	  !feta_eta=f_eta_eta(rho)
+	  !a_squre=a0**2 *feta_eta + p/rho**2 *rho0 *gamma0
+	  !c=sqrt(a_squre-rho0/rho**2*gamma0*sxx+4.d0/3*miu/rho)
 		if( dx.le.dxmin ) then
 			dxmin = dx/c
 		endif

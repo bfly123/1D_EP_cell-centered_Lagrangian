@@ -17,13 +17,28 @@ subroutine Gauss(U1,t,dt,dU_dt,F,uug,src)
 	  double precision uu1(-nv:jx+nv)
 	  double precision uu2(-nv:jx+nv)
 	  double precision dt,t1,t2,t
-	  integer i
+	  integer i,j
 
 	  t1=dt*(3.d0-sqrt(3.0))/6
 
-	  call source1(t,src1)
+	  call source1(t+t1,src1)
+!	do i=-nv,jx+nv
+!		do j=0,3
+!		k1= du_dt(i,j,2)/2/du_dt(i,j,1)
 
-	  U2(:,:) = U1(:,:)      + dU_dt(:,:,1)*t1 !      + dU_dt(:,:,2)*t1**2/2  
+	  U2(:,:) = U1(:,:)        &
+	  + dU_dt(:,:,1)*t1            + dU_dt(:,:,2)*t1**2/2  
+!	do i=-nv,jx+nv
+!	do j=0,3
+!	if(abs(du_dt(i,j,1)).ge.1.d-14)then 
+!	  U2(i,j) = U1(i,j)     &
+!	  +2*dU_dt(i,j,1)**2*t1/(2*dU_dt(i,j,1)-t1*dU_dt(i,j,2))  
+!  else
+!	  U2(i,j)=U1(i,j)
+!  endif
+!  enddo
+!  enddo
+
 	  uu1(:)= U2(:,1)/U2(:,0)
 
 	  do i=-nv,jx+nv
@@ -33,9 +48,22 @@ subroutine Gauss(U1,t,dt,dU_dt,F,uug,src)
 
 	  t2=dt*(3.d0+sqrt(3.0))/6
 
-	  call source1(t,src2)
+	  call source1(t+t2,src2)
 
-	  U2(:,:) = U1(:,:)  + dU_dt(:,:,1)*t2  ! + dU_dt(:,:,2)*t2**2/2  
+  U2(:,:) = U1(:,:)    & 
+    + dU_dt(:,:,1)*t2     + dU_dt(:,:,2)*t2**2/2  
+
+!	do i=-nv,jx+nv
+!	do j=0,3
+!	if(abs(du_dt(i,j,1)).ge.1.d-14)then 
+!	  U2(i,j) = U1(i,j)     &
+!	  +2*dU_dt(i,j,1)**2*t2/(2*dU_dt(i,j,1)-t2*dU_dt(i,j,2))  
+!	else
+!	  U2(i,j)=U1(i,j)
+!	endif
+!	  enddo
+!	enddo
+!
 	  uu2(:)= U2(:,1)/U2(:,0)
 
 	  do i=-nv,jx+nv
@@ -44,13 +72,9 @@ subroutine Gauss(U1,t,dt,dU_dt,F,uug,src)
 	  enddo
 
 	  F= dt*(F1+F2)/2
-	 ! do i=0,jx
-	 ! write(*,*)i, F1(i,2)-F2(i,2)
-	 ! enddo
-
 	  uug =dt*(uu1+uu2)/2
 	  src=dt*(src1+src2)/2
-	!call output1(F2)
+!  src=0
  end
 
 

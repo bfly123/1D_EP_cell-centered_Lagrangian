@@ -64,10 +64,11 @@ subroutine material_derivative_try(Ue,pUe,du)
 	double precision Ue(-nv:jx+nv,0:3)
 	double precision pUe(-nv:jx+nv,0:3,2)
 	double precision dU(-nv:jx+nv,0:3,2)
-	double precision rho,uu,p,sxx,E,puu,pp,psxx,ei
+	double precision rho,uu,p,sxx,E,prho,puu,pp,psxx,ei
 	double precision p2rho,p2uu,p2p,p2sxx
 	double precision drho,duu,dp,dsxx,dE,dei
 	double precision dprho,dpuu,dpP,dpsxx,dpE,dpei
+	double precision f_eta,f_eta_eta,f_eta_eta_eta
 	integer i,j,k
 
 	do i = -nv,jx+nv
@@ -90,17 +91,15 @@ subroutine material_derivative_try(Ue,pUe,du)
 	p2p   = pue(i,2,2)
 	p2sxx = pue(i,3,2)
 
-
 	dU(i,0,1) = -rho*puu
 	dU(i,1,1) = -rho*uu*puu-pp+psxx
 	dU(i,2,1) = -rho*E*puu-(pp-psxx)*uu-(p-sxx)*puu
 	dU(i,3,1) = 4.d0/3*miu*puu
 
-
 	drho = -rho*puu
 	duu  = -1/rho*(pP-psxx)
 	dE   = -uu/rho*(pP-psxx)-1/rho*puu*(p-sxx)
-	dei  = dE - 2*uu*duu
+	dei  = dE - uu*duu
 	dp   = a0**2*f_eta_eta(rho)*drho + rho0*gamma0*dei
 	dsxx = 4.d0/3*miu*puu
 
@@ -109,18 +108,19 @@ subroutine material_derivative_try(Ue,pUe,du)
 	dpuu  = prho/rho**2*(pP-psxx)-1/rho*(p2P-p2sxx)
 	dpE   = -puu/rho*(pP-psxx)+uu/rho**2*prho*(pP-psxx)-uu/rho*(p2P-p2sxx)&
 			+1/rho**2*prho*puu*(p-sxx)-1/rho*p2uu*(p-sxx)-1/rho*puu*(pP-psxx)
-	dpei  = dpE - 2puu*duu-2*uu*dpuu
+	dpei  = dpE - puu*duu-uu*dpuu
 	dpP   = a0**2*f_eta_eta_eta(rho)/rho0*prho*drho+a0**2*f_eta_eta(rho)*dprho&
 			+rho0*gamma0*dpei
-	dpSxx = 4.d0/3*miu*dpuu
+	dpSxx = 4.d0/3*miu*p2uu
 
 
-	dU(i,0,2) = -drho*dpuu -rho*dpuu
+	dU(i,0,2) = -drho*puu -rho*dpuu
 	dU(i,1,2) = -drho*uu*puu-rho*duu*puu-rho*uu*dpuu-dpp+dpsxx
 	dU(i,2,2) = -drho*E*puu-rho*dE*puu-rho*E*dpuu- duu*(pP-psxx)&
 				-uu*(dpP-dpsxx)-dpuu*(p-sxx)-puu*(dp-dsxx)
-	dU(i,3,2) =  4.d0/3*miu*dpuu
+	dU(i,3,2) =  4.d0/3*miu*p2uu
 	enddo
+
 	end
 
 

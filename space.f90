@@ -29,33 +29,21 @@ case(1)
 			call trans_u_to_ue(u4(i,:),uo(i,:))
 			call eigen_var_OR(uo(i,:),Ar(i,:,:))
 			call eigen_var_OL(Ar(i,:,:),AL(i,:,:))
-			!ux(i,0:3) = matmul(AL(i,0:3,0:3),uo(i,0:3))
+			ux(i,0:3) = matmul(AL(i,:,:),uo(i,:))
 		enddo
- 		 
-	ux=0
-	do i=0,3
-		do j=0,3
-	ux(:,i)=ux(:,i)+AL(:,i,j)*uo(:,j)
-	enddo
-	enddo
-!	ux=uo
    
 	do i=0,3
 call  WENO3_new(nv,jx,ux(:,i),ulx(:,i),urx(:,i))
 	!call  WENO3_origin(nv,jx,ux(:,i),ulx(:,i),urx(:,i))
 !	call  WENO3_new_change(nv,jx,x,ux(:,i),ulx(:,i),urx(:,i))
 !	call  WENO5_new(nv,jx,ux(:,i),ulx(:,i),urx(:,i))
-	!call upwind(nv,jx,ux(:,i),ulx(:,i),urx(:,i))
+!	call upwind(nv,jx,ux(:,i),ulx(:,i),urx(:,i))
 !	call upwind(nv,jx,ux(:,i),ulx(:,i),urx(:,i))
 	enddo
-	
-ulo=0
-uro=0
-	do i=0,3
-		do j=0,3
-	ulo(:,i)=ulo(:,i)+Ar(:,i,j)*ulx(:,j)
-	uro(:,i)=uro(:,i)+Ar(:,i,j)*urx(:,j)
-	enddo
+
+	do i=-nv,jx+nv
+	ulo(i,:)=matmul(Ar(i,:,:),ulx(i,:))
+	uro(i,:)=matmul(Ar(i,:,:),urx(i,:))
 	enddo
    
 	do i=-nv,jx+nv
@@ -69,9 +57,9 @@ call  HLLC_EP_new(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
 case(2)
 
 	do i=0,3
-	!call  WENO5_new(nv,jx,u4(:,i),ul(:,i),ur(:,i))
+!call  WENO5_new(nv,jx,u4(:,i),ul(:,i),ur(:,i))
 
-	!call  WENO3_new_change(nv,jx,x,u4(:,i),ul(:,i),ur(:,i))
+!	call  WENO3_new_change(nv,jx,x,u4(:,i),ul(:,i),ur(:,i))
 call  WENO3_new(nv,jx,u4(:,i),ul(:,i),ur(:,i))
 	!call  WENO3_new_change(nv,jx,x,u4(:,i),ul(:,i),ur(:,i))
 !	call  WENO3LIU_new(nv,jx,u4(:,i),ul(:,i),ur(:,i))
@@ -81,8 +69,8 @@ call  WENO3_new(nv,jx,u4(:,i),ul(:,i),ur(:,i))
 !call output1(ul)	
 !pause
 	  !read(*,*)i
-!	call  HLLC_EPM(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
-	!call  HLLC_EP_new(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
+!call  HLLC_EPM(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
+!	call  HLLC_EP_new(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
 	call  HLLC_EP(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
 case (3)
 		call  LF_splitting(u4,ul,ur)
@@ -130,7 +118,7 @@ endselect
 
 
     do k=0,3
-     do i=-nv+2,jx+nv
+     do i=-nv+2,jx+nv-2
         f4(i,k)=h(i,k)-h(i-1,k)
      enddo
     enddo

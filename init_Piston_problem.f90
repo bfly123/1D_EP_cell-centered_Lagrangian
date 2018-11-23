@@ -20,13 +20,14 @@ double precision ue(0:3)
     dlx=1.0
 	dx=dlx/jx
     allocate(U(-nv:jx+nv,0:3))
+    allocate(Uo(-nv:jx+nv,0:3))
     allocate(X(-nv:jx+nv))
     
     u=0
 
 
     TT=1.5d-4
-	SF=0.45d0
+	SF=0.5d0
 
     rho2=8930d0
     u2=10.d0
@@ -41,16 +42,17 @@ double precision ue(0:3)
 
     do i=-nv,jx+nv
 	!if (i>10)then
-			x(i)=i*dx 
-	    !    U(i,0)=rho1
-        !    U(i,1)=rho1*u1
-        !    U(i,2)=(p1-rho0*a0**2*f_eta(rho1))/(rho0*gamma0)*rho1+0.5d0*rho1*u1*u1
-		!	U(i,3)=0
-			ue(0)=rho1
-			ue(1)=u1
-			ue(2)=p1
-			ue(3)=sxx1
-			call trans_ue_to_u(ue, u(i,:))
+			x(i)=(i+0.5d0)*dx 
+	        U(i,0)=rho1
+            U(i,1)=rho1*u1
+            U(i,2)=(p1-rho0*a0**2*f_eta(rho1))/(rho0*gamma0)*rho1+0.5d0*rho1*u1*u1
+			U(i,3)=0
+
+			uo(i,0)=rho1
+			uo(i,1)=u1
+			uo(i,2)=p1
+			uo(i,3)=sxx1
+			!call trans_ue_to_u(uo(i,:), u(i,:))
         !    U(i,0)=rho1
 
 	!	else 

@@ -7,40 +7,47 @@ integer i,j,k
 double precision f_eta,dx,p,a,s,e0,b
 double precision ue(0:3)
 
-		Y0=9.d10
-		rho0=8930
+		Y0=0
+		rho0=2
 		gamma0=2.d0
-		miu=4.5d10
-		a0=3940
+		miu=4.5d5
+		a0=394
 		pi=6*dasin(0.5d0)
 		s0=1.49
 
-		s= 6.d7
-		e0= 0.1d-14
-		a = 1.d4
-		b=0.1
+		s= 6.d2
+		e0= 1.d-1
+		a = 1.d3
+		b=0.2
 
-    nv=4
-    jx=50
+    nv=6
+    jx=2000
     dlx=1.0
 	dx=dlx/jx
     allocate(U(-nv:jx+nv,0:3))
+    allocate(Uo(-nv:jx+nv,0:3))
     allocate(X(-nv:jx+nv))
     
     u=0
 
+    TT=1.d0
+	SF=0.6d0
 
-    TT=0.01d0
-	SF=0.05d0
+	do i=-nv,jx+nv
+		x(i)=(i+0.5)*dx 
+	enddo
 
     do i=-nv,jx+nv
 	!if (i>10)then
-			x(i)=i*dx 
-			u(i,0)= rho0*(1-b*sin(2*pi*x(i)))
-			u(i,1) = u(i,0)* a 
-			u(i,2)= (e0+0.5d0*a**2)*u(i,0)
-			u(i,3)= s*sin(2*pi*x(i))
+			uo(i,0)= rho0*(1+b*sin(pi*(x(i)+x(i-1))))
+			uo(i,1) =   1+b*sin(pi*(x(i)+x(i-1)))
+			uo(i,2)= 1! -s*sin(pi*(x(i)+x(i-1))) + 1.5d0*rho0*a0**2 !( 1-b*sin(pi*(x(i)+x(i-1))))
+		!	(e0+0.5d0*a**2)*u(i,0)
+			uo(i,3)=10!  s*sin(pi*(x(i)+x(i-1)))
+			call trans_ue_to_u(uo(i,:),u(i,:))
 	enddo
+!call output1(uo)
+!	pause
 end 
 
 

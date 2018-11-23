@@ -8,6 +8,7 @@ integer ti,t1
    ti=0
   do while(t<tt)
       call CFL(dt)
+
 	  if(t+dt>tt)then
 		dt=tt-t
       endif   
@@ -15,9 +16,8 @@ integer ti,t1
       t=t+dt
       write(*,*)'T=',T,'dt=',dt
 	  ti=ti+1
-!	 call R_K(t1,dt)
-	  call ADER(t1,dt)
-
+	 call R_K(t1,dt)
+!	  call ADER(t1,dt)
 !stop
    enddo
 end  
