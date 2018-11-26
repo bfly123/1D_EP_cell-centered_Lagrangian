@@ -195,3 +195,67 @@ subroutine weno3_new_change(nv,jx,x,F,HL,HR)
     enddo
 	!pause
 end
+
+subroutine weno3_new_two_matter(nv,jx,inter,U,UL,UR,k)
+      implicit none
+	  integer nv,jx,i,inter,k
+	  double precision u(-nv:jx+nv)
+	  double precision u1(-nv:jx+nv)
+	  double precision uL(-nv:jx+nv)
+	  double precision uR(-nv:jx+nv)
+	  double precision  IS0,IS1,c0,c1,a0,a1,b0,b1,ss,u2,d0,d1,d2,dx
+	
+	  ss=1.d-10
+
+	  !***UL
+	  U1=U
+	 do i=-nv+1,jx+nv-1
+	 if(i==inter)then
+		 select  case(k)
+	  case(2,3)
+		  U1(i-1) = U(i)
+	  endselect
+	  else if(i==inter-1) then
+
+		  select  case(k)
+	  case(2,3)
+		  U1(i+1)= U(i) 
+		endselect
+		endif
+
+	  IS0= (U1(i)-U1(i-1))**2
+	  IS1= (U1(i+1)-u1(i))**2
+
+	  c0= 2.d0/3
+	  c1= 1.d0/3
+	  a0= c0/(ss+IS0)
+	  a1= c1/(ss+IS1)
+
+!	  a0=c0
+!	  a1=c1
+
+	  b0=a0/(a0+a1)
+	  b1=a1/(a0+a1)
+
+	  uR(i-1)= b0*(u1(i)+u1(i-1))/2+b1*(3*u1(i)-u1(i+1))/2
+
+	  c0= 1.d0/3
+	  c1= 2.d0/3
+
+	  a0= c0/(ss+IS0)
+	  a1= c1/(ss+IS1)
+	  
+!	  a0=c0
+!	  a1=c1
+
+	  b0=a0/(a0+a1)
+	  b1=a1/(a0+a1)
+
+	  uL(i)= b0*(3*u1(i)-u1(i-1))/2+b1*(u1(i)+u1(i+1))/2
+
+	  u1(i-1)=u(i-1)
+	  u1(i+1)=u(i+1)
+	  enddo
+ 
+end
+

@@ -21,19 +21,25 @@ double precision u_half(-nv:jx+nv)
 double precision  rho,uu,p,f_eta
 integer kind_split
 
-kind_split =2
+kind_split =1
 
 select case(kind_split) 
 case(1)
 		do i=-nv,jx+nv
+		if (i.le.inter-1)then
+			call state_choose(1)
+		else
+			call state_choose(2)
+		endif
 			call trans_u_to_ue(u4(i,:),uo(i,:))
-			call eigen_var_OR(uo(i,:),Ar(i,:,:))
-			call eigen_var_OL(Ar(i,:,:),AL(i,:,:))
-			ux(i,0:3) = matmul(AL(i,:,:),uo(i,:))
+		!	call eigen_var_OR(uo(i,:),Ar(i,:,:))
+		!	call eigen_var_OL(Ar(i,:,:),AL(i,:,:))
+		!	ux(i,0:3) = matmul(AL(i,:,:),uo(i,:))
 		enddo
    
 	do i=0,3
-call  WENO3_new(nv,jx,ux(:,i),ulx(:,i),urx(:,i))
+!call  WENO3_new(nv,jx,ux(:,i),ulx(:,i),urx(:,i))
+call  WENO3_new_two_matter(nv,jx, inter,uo(:,i),ulo(:,i),uro(:,i),i)
 	!call  WENO3_origin(nv,jx,ux(:,i),ulx(:,i),urx(:,i))
 !	call  WENO3_new_change(nv,jx,x,ux(:,i),ulx(:,i),urx(:,i))
 !	call  WENO5_new(nv,jx,ux(:,i),ulx(:,i),urx(:,i))
@@ -41,19 +47,35 @@ call  WENO3_new(nv,jx,ux(:,i),ulx(:,i),urx(:,i))
 !	call upwind(nv,jx,ux(:,i),ulx(:,i),urx(:,i))
 	enddo
 
-	do i=-nv,jx+nv
-	ulo(i,:)=matmul(Ar(i,:,:),ulx(i,:))
-	uro(i,:)=matmul(Ar(i,:,:),urx(i,:))
-	enddo
+!	call output1(uro)
+!	pause
+!	do i=-nv,jx+nv
+!	ulo(i,:)=matmul(Ar(i,:,:),ulx(i,:))
+!	uro(i,:)=matmul(Ar(i,:,:),urx(i,:))
+!	enddo
    
-	do i=-nv,jx+nv
-		call trans_ue_to_u(ulo(i,:),ul(i,:))
-		call trans_ue_to_u(uro(i,:),ur(i,:))
-	enddo
+!	do i=-nv,jx+nv
+!	if(i.ge.inter)then
+!		call state_choose(2)
+!	else
+!		call state_choose(1)
+!	endif
+!		call trans_ue_to_u(ulo(i,:),ul(i,:))
+!	enddo
+!	do i=-nv,jx+nv
+!	if(i.ge.inter-1)then
+!		call state_choose(2)
+!	else
+!		call state_choose(1)
+!	endif
+!		call trans_ue_to_u(uro(i,:),ur(i,:))
+!	enddo
+
 !call output1(ul)	
 !pause
 !call  HLLC_EP(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
-call  HLLC_EP_new(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
+!call  HLLC_EP_new(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
+call  HLLC_EP_new_two_matter(nv,jx,inter,u4(:,1)/u4(:,0),ulo,uro,h,u_half)
 case(2)
 
 	do i=0,3

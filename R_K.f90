@@ -89,12 +89,13 @@ case(5)
 !
   case(3)
 
-call source1(t,src)
+!call source1(t,src)
 	  !*************1**********
 	call space(U,f,u_half)
 	!x1(:)=x(:)+dt*u_half(:)
 !	call bound_v(u_half)
 	x1(:)=x(:)+dt*u_half(:)
+
 
 	do i=-nv+1,nv+jx
     	udx1(i,3)=udx(i,3)-dt*f(i,3)/dx1(i)
@@ -103,8 +104,8 @@ call source1(t,src)
     	u(i,3)=udx1(i,3)
 		u(i,0:2) = udx1(i,0:2)/dx1(i)
 
-		u(i,3) = fgamma(u(i,3))
-		call trans_u_to_ue(u(i,:),uo(i,:))
+		!u(i,3) = fgamma(u(i,3),i,inter)
+		!call trans_u_to_ue(u(i,:),uo(i,:))
 		!call trans_u_to_ue()
 	!	call rho_sxx(urho(i),u(i,0),u(i,3))
 	!	urho(i)=u(i,0)
@@ -128,8 +129,8 @@ call source1(t+dt,src)
 		u(i,0:2) = udx2(i,0:2)/dx1(i)
 		!call rho_sxx(urho(i),u(i,0),u(i,3))
 		!urho(i)=u(i,0)
-		u(i,3) = fgamma(u(i,3))
-		call trans_u_to_ue(u(i,:),uo(i,:))
+		!u(i,3) = fgamma(u(i,3),i,inter)
+		!call trans_u_to_ue(u(i,:),uo(i,:))
 	enddo
 !
 
@@ -151,11 +152,19 @@ call source1(t+dt,src)
 		u(i,0:2) = udx(i,0:2)/dx1(i)
 		!call rho_sxx(urho(i),u(i,0),u(i,3))
 		!urho(i)=u(i,0)
-		u(i,3) = fgamma(u(i,3))
+		u(i,3) = fgamma(u(i,3),i,inter)
 
-		call trans_u_to_ue(u(i,:),uo(i,:))
+		!call trans_u_to_ue(u(i,:),uo(i,:))
 	enddo
-!
+		do i=-nv,jx+nv
+		if (i.le.inter-1)then
+			call state_choose(1)
+		else
+			call state_choose(2)
+		endif
+			call trans_u_to_ue(u(i,:),uo(i,:))
+		enddo
+
 case(1)
 
 call bound(u)

@@ -9,7 +9,7 @@ implicit none
     !case 2 Piston problem
     !case 3 lax_problem
     !case 4 two_blast
-  kind_problem =4
+  kind_problem =6
   select case(kind_problem) 
     
     case(1)
@@ -20,8 +20,8 @@ implicit none
        call init_accuracy_test
     case(5)
         call init_entropy_wave
-    !case(6)
-    !    call init_interface !接触间断
+    case(6)
+        call init_two_material
   end select   
      
 

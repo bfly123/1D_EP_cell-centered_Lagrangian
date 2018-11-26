@@ -18,10 +18,10 @@ double precision ue(0:3)
 		s= 6.d2
 		e0= 1.d-1
 		a = 1.d3
-		b=0.2
+		b=0.1
 
     nv=6
-    jx=2000
+    jx=400
     dlx=1.0
 	dx=dlx/jx
     allocate(U(-nv:jx+nv,0:3))
@@ -31,7 +31,7 @@ double precision ue(0:3)
     u=0
 
     TT=1.d0
-	SF=0.6d0
+	SF=0.3d0
 
 	do i=-nv,jx+nv
 		x(i)=(i+0.5)*dx 
@@ -40,10 +40,10 @@ double precision ue(0:3)
     do i=-nv,jx+nv
 	!if (i>10)then
 			uo(i,0)= rho0*(1+b*sin(pi*(x(i)+x(i-1))))
-			uo(i,1) =   1+b*sin(pi*(x(i)+x(i-1)))
+			uo(i,1) =   2+b*sin(pi*(x(i)+x(i-1)))
 			uo(i,2)= 1! -s*sin(pi*(x(i)+x(i-1))) + 1.5d0*rho0*a0**2 !( 1-b*sin(pi*(x(i)+x(i-1))))
 		!	(e0+0.5d0*a**2)*u(i,0)
-			uo(i,3)=10!  s*sin(pi*(x(i)+x(i-1)))
+			uo(i,3)=0!  s*sin(pi*(x(i)+x(i-1)))
 			call trans_ue_to_u(uo(i,:),u(i,:))
 	enddo
 !call output1(uo)

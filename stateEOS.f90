@@ -49,3 +49,37 @@
 	  f_eta_eta_eta=((1+s0-gamma0)*(eta-s0*(eta-1))-3.d0*(1-s0)*(eta+(s0-gamma0)*(eta-1)))/(eta-s0*(eta-1))**4
 	  end function
 
+	 subroutine state_choose(i)
+	 use global_cont
+	 implicit none
+	 integer i
+
+	 select case(i)
+
+	 case(2)
+
+	Y0=3.d3
+	rho0=278.5d0
+	gamma0=2.d0
+	miu=2.76d5
+	a0=532.8d0
+	pi=6*dasin(0.5d0)
+	s0=1.338d0
+
+	case(1) 
+
+		Y0=9.d2
+		rho0=893
+		gamma0=2.d0
+		miu=4.5d5
+		a0=394
+		pi=6*dasin(0.5d0)
+		s0=1.49d0
+
+		endselect
+end
+
+
+
+
+

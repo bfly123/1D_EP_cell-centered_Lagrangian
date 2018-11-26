@@ -1,6 +1,7 @@
 module global        
 implicit none
 integer           nv                                !虚拟网格点数
+integer           inter                                !interface_point
 integer           JX                                !x方向网格数 
 integer           kind_problem                                !x方向网格数 
 double precision dLx                               !x方向计算区域长度  
