@@ -21,29 +21,31 @@ subroutine Source1(t,src)
 	 dx = x(i)-x(i-1)
 	 x1=(x(i)+x(i-1))/2
 
-	 ! eta=1-b*sin(2*pi*(x1-a*t))
-	 ! rho_x=-2*pi*rho0*b*cos(2*pi*(x1-a*t))
-	 ! sxx_x=2*pi*s*cos(2*pi*(x1-a*t))
-	 ! s21=a0**2*f_eta_eta(eta*rho0)*rho_x-sxx_x
+	  eta=1-b*sin(2*pi*(x1-a*t))
+	  rho_x=-2*pi*rho0*b*cos(2*pi*(x1-a*t))
+	  sxx_x=2*pi*s*cos(2*pi*(x1-a*t))
+	  s21=a0**2*f_eta_eta(eta*rho0)*rho_x-sxx_x
 	  s21=-2*pi*s*cos(2*pi*(x1-a*t))-1.5d0*rho0*a0**2*b*(2*pi*cos(x1-a*t))
+
 	  x2=x1+sqrt(0.6)*(dx/2)
 
-	 ! eta=1-b*sin(2*pi*(x2-a*t))
-	 ! rho_x=-2*pi*rho0*b*cos(2*pi*(x2-a*t))
-	 ! sxx_x=2*pi*s*cos(2*pi*(x2-a*t))
-	 ! s22=a0**2*f_eta_eta(eta*rho0)*rho_x-sxx_x
+	  eta=1-b*sin(2*pi*(x2-a*t))
+	  rho_x=-2*pi*rho0*b*cos(2*pi*(x2-a*t))
+	  sxx_x=2*pi*s*cos(2*pi*(x2-a*t))
+	  s22=a0**2*f_eta_eta(eta*rho0)*rho_x-sxx_x
 	  s22=-2*pi*s*cos(2*pi*(x2-a*t))-1.5d0*rho0*a0**2*b*(2*pi*cos(x2-a *t))
 
 	  x3=x1- sqrt(0.6)*(dx/2)
 
-	 !eta=1-b*sin(2*pi*(x3-a*t))
-	 ! rho_x=-2*pi*rho0*b*cos(2*pi*(x3-a*t))
-	 ! sxx_x=2*pi*s*cos(2*pi*(x3-a*t))
-	 ! s23=a0**2*f_eta_eta(eta*rho0)*rho_x-sxx_x
+	 eta=1-b*sin(2*pi*(x3-a*t))
+	 rho_x=-2*pi*rho0*b*cos(2*pi*(x3-a*t))
+	  sxx_x=2*pi*s*cos(2*pi*(x3-a*t))
+	  s22=-2*pi*s*cos(2*pi*(x3-a*t))-1.5d0*rho0*a0**2*b*(2*pi*cos(x3-a*t))
+	  !s23=a0**2*f_eta_eta(eta*rho0)*rho_x-sxx_x
 
-	  s23=-2*pi*s*cos(2*pi*(x3-a*t))-1.5d0*rho0*a0**2*b*(2*pi*cos(x3-a*t))
+	 ! s23=-2*pi*s*cos(2*pi*(x3-a*t))-1.5d0*rho0*a0**2*b*(2*pi*cos(x3-a*t))
 
-	 ! s2=(s21*8.d0/9+s22*5.d0/9+s23*5.d0/9)*dx/2
+	  s2=(s21*8.d0/9+s22*5.d0/9+s23*5.d0/9)*dx/2
 	 s2= s21*dx
 
 	  s3=s2*a

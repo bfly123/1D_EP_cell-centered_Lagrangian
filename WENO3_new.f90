@@ -212,13 +212,13 @@ subroutine weno3_new_two_matter(nv,jx,inter,U,UL,UR,k)
 	 do i=-nv+1,jx+nv-1
 	 if(i==inter)then
 		 select  case(k)
-	  case(2,3)
+	  case(0,3)
 		  U1(i-1) = U(i)
 	  endselect
 	  else if(i==inter-1) then
 
 		  select  case(k)
-	  case(2,3)
+	  case(0,3)
 		  U1(i+1)= U(i) 
 		endselect
 		endif

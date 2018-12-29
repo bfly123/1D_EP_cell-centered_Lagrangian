@@ -20,6 +20,7 @@ HLLC_EPM	HLLC_EP.f90	/^subroutine HLLC_EPM(/;"	s
 HLLC_EP_NEW_origin	Riemann_solver.f90	/^subroutine  HLLC_EP_NEW_origin(/;"	s
 HLLC_EP_new	HLLC_EP.f90	/^subroutine HLLC_EP_new(/;"	s
 HLLC_EP_new_two_matter	HLLC_EP.f90	/^subroutine HLLC_EP_new_two_matter(/;"	s
+HLLC_EP_two_matter	HLLC_EP.f90	/^subroutine HLLC_EP_two_matter(/;"	s
 HLL_EP	HLLC_EP.f90	/^subroutine HLL_EP(/;"	s
 JX	global.f90	/^integer           JX /;"	v	module:global
 LEFT_EIGENVECTORS_1D_ep	for liuli eigenvector multiply.f90	/^subroutine LEFT_EIGENVECTORS_1D_ep(/;"	s
@@ -27,7 +28,7 @@ LF_con_var	LF_con_var.f90	/^subroutine LF_con_var(/;"	s
 LF_splitting	LF_splitting.f90	/^subroutine LF_splitting(/;"	s
 LF_splitting	splitting.f90	/^subroutine LF_splitting(/;"	s
 MKL_AL_AR	reverse.f90	/^subroutine MKL_AL_AR(/;"	s
-Objects	makefile	/^Objects = global.o fun.o bound_choose.o  bound_Wilkins_problem.o  bound_Piston_problem.o CFL.o bound_accuracy_test.o  init_entropy_wave.o init_Wilkins_problem.o  init_Piston_problem.o init_accuracy_test.o initial.o  Main.o output.o  R_K.o space.o  timesolve.o upwind.o HLLC_EP.o  WENO5_NEW.o WENO5_NEW_LF.o LF_splitting.o eigen_var.o  reverse.o output1.o WENO3_new.o upwind3.o trans_u_ue_F_uo.o stateEOS.o subcell_WENO3.o Riemann_solver.o material_derivative.o Gauss.o ADER.o source.o  VS_splitting.o$/;"	m
+Objects	makefile	/^Objects = global.o fun.o bound_choose.o  bound_Wilkins_problem.o  bound_Piston_problem.o CFL.o bound_accuracy_test.o bound_two_material.o  init_entropy_wave.o init_Wilkins_problem.o  init_Piston_problem.o init_accuracy_test.o  init_two_material.o  initial.o  Main.o output.o  R_K.o space.o  timesolve.o upwind.o HLLC_EP.o  WENO5_NEW.o WENO5_NEW_LF.o LF_splitting.o eigen_var.o  reverse.o output1.o WENO3_new.o upwind3.o trans_u_ue_F_uo.o stateEOS.o subcell_WENO3.o Riemann_solver.o material_derivative.o Gauss.o ADER.o source.o  VS_splitting.o $/;"	m
 Output	output.f90	/^    subroutine Output$/;"	s
 Output1	output1.f90	/^    subroutine Output1(/;"	s
 RIGHT_EIGENVECTORS_1D_ep	for liuli eigenvector multiply.f90	/^subroutine RIGHT_EIGENVECTORS_1D_ep(/;"	s
@@ -54,6 +55,7 @@ bound_interface	bound_interface.f90	/^subroutine bound_interface(/;"	s
 bound_lax_problem	bound_lax_problem.f90	/^subroutine bound_lax_problem(/;"	s
 bound_sod_problem	bound_sod_problem.f90	/^subroutine bound_sod_problem(/;"	s
 bound_two_blast_waves	bound_two_balst_waves.f90	/^subroutine bound_two_blast_waves(/;"	s
+bound_two_material	bound_two_material.f90	/^subroutine bound_two_material(/;"	s
 bound_v	bound_choose.f90	/^subroutine bound_v(/;"	s
 characterReconstruct	Characterreconst.f90	/^subroutine characterReconstruct(/;"	s
 dLx	global.f90	/^double precision dLx /;"	v	module:global
@@ -114,7 +116,7 @@ rho2	global.f90	/^double precision rho2 /;"	v	module:init_tran
 rho_sxx	R_K.f90	/^subroutine rho_sxx(/;"	s
 s0	global.f90	/^double precision::s0$/;"	v	module:global_cont
 sound	trans_u_ue_F_uo.f90	/^		subroutine sound(/;"	s
-source	makefile	/^source = global.f90 fun.f90 bound_choose.f90  bound_accuracy_test.f90  bound_Wilkins_problem.f90  bound_Piston_problem.f90 init_entropy_wave.f90 init_accuracy_test.f90  CFL.f90  init_Wilkins_problem.f90 init_Piston_problem.f90  initial.f90  Main.f90 output.f90  R_K.f90 space.f90 timesolve.f90  upwind.f90  HLLC_EP.f90 WENO5_NEW.f90 WENO5_NEW_LF.f90 LF_splitting.f90 eigen_var.f90 reverse.f90 output1.f90WENO3_new.f90 upwind3.f90 trans_u_ue_F_uo.f90 stateEOS.f90 subcell_WENO3.f90 Riemann_solver.f90 material_derivative.f90 Gauss.f90 ADER.f90 source.f90 VS_splitting.f90$/;"	m
+source	makefile	/^source = global.f90 fun.f90 bound_choose.f90  bound_accuracy_test.f90  bound_Wilkins_problem.f90  bound_Piston_problem.f90 bound_two_material.f90 init_entropy_wave.f90 init_accuracy_test.f90  CFL.f90  init_Wilkins_problem.f90 init_Piston_problem.f90  init_two_material.f90  initial.f90  Main.f90 output.f90  R_K.f90 space.f90 timesolve.f90  upwind.f90  HLLC_EP.f90 WENO5_NEW.f90 WENO5_NEW_LF.f90  LF_splitting.f90 eigen_var.f90 reverse.f90 output1.f90WENO3_new.f90 upwind3.f90 trans_u_ue_F_uo.f90 stateEOS.f90 subcell_WENO3.f90 Riemann_solver.f90 material_derivative.f90 Gauss.f90 ADER.f90 source.f90 VS_splitting.f90$/;"	m
 space	space.f90	/^subroutine space(/;"	s
 state_choose	stateEOS.f90	/^	 subroutine state_choose(/;"	s
 state_de_to_dp	stateEOS.f90	/^		subroutine  state_de_to_dp(/;"	s

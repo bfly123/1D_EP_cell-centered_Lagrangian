@@ -523,8 +523,8 @@ endif
 	  call state_p_to_ei(rhoR,pR,eR)
 	  call sound(uR(i,:),cR)
 	  
-	  sL=min(uuL-cL,uuR-cR)
-	  sR=max(uuL+cL,uuR+cR)
+	 sL=min(uuL-cL,uuR-cR)
+	 sR=max(uuL+cL,uuR+cR)
      s_star = (sigmaL-sigmaR+rhoL*uuL*(sL-uuL)-rhoR*uuR*(sR-uuR))/(rhoL*(sL-uuL)-rhoR*(sR-uuR))
 	 rhoL_star=rhoL*(uuL-sL)/(s_star-sL)
 	 rhoR_star=rhoR*(uuR-sR)/(s_star-sR)
@@ -542,7 +542,7 @@ endif
 	 tmp =-4.d0/3*miu*log(rhoL_star/rhoL)+sxxL
 
 	 if (dabs(sxxL).lt.2.d0/3*Y0.and.abs(tmp).ge.2.d0/3*Y0) then
-	 !if (abs(tmp).ge.2.d0/3*Y0) then
+	! if (abs(tmp).ge.2.d0/3*Y0) then
 !		 write(*,*) i,"left"
 !		 write(*,*) rhoL,uuL,pL,sxxL
 !		 write(*,*) i,"star"
@@ -588,8 +588,8 @@ endif
 
 
 	 tmp =-4.d0/3*miu*log(rhoR_star/rhoR)+sxxR
-	 if (dabs(sxxR).lt.2.d0/3*Y0.and.abs(tmp).ge.2.d0/3*Y0) then
-	 !if (abs(tmp).ge.2.d0/3*Y0) then
+	if (dabs(sxxR).lt.2.d0/3*Y0.and.abs(tmp).ge.2.d0/3*Y0) then
+	! if (abs(tmp).ge.2.d0/3*Y0) then
 	!	 write(*,*) i,"******"
 	!	 write(*,*) rhoR,uuR,pR,sxxR
 	!	 pause
@@ -736,14 +736,14 @@ call state_choose(1)
 
 	 tmp =-4.d0/3*miu*log(rhoL_star/rhoL)+sxxL
 
-	 !if (dabs(sxxL).lt.2.d0/3*Y0.and.abs(tmp).ge.2.d0/3*Y0) then
-	 if (abs(tmp).ge.2.d0/3*Y0) then
+	 if (dabs(sxxL).lt.2.d0/3*Y0.and.abs(tmp).ge.2.d0/3*Y0) then
+	 !if (abs(tmp).ge.2.d0/3*Y0) then
 !		 write(*,*) i,"left"
 !		 write(*,*) rhoL,uuL,pL,sxxL
 !		 write(*,*) i,"star"
 !		 write(*,*) rhoL_star,rhoR_star,s_star
 
-		if(tmp.ge.2.d0/3*Y0)then
+		if(tmp.ge.2.d0/3*Y0) then
 		cap_sxxL=2.d0/3*Y0
 		cap_rhoL=rhoL*exp(-Y0/miu/2+3.d0/4*sxxL/miu)
 		else if(tmp.le.-2.d0/3*Y0)then
@@ -784,8 +784,8 @@ call state_choose(1)
 call state_choose(2)
 
 	 tmp =-4.d0/3*miu*log(rhoR_star/rhoR)+sxxR
-	 !if (dabs(sxxR).lt.2.d0/3*Y0.and.abs(tmp).ge.2.d0/3*Y0) then
-	 if (abs(tmp).ge.2.d0/3*Y0) then
+	 if (dabs(sxxR).lt.2.d0/3*Y0.and.abs(tmp).ge.2.d0/3*Y0) then
+	 !if (abs(tmp).ge.2.d0/3*Y0) then
 	!	 write(*,*) i,"******"
 	!	 write(*,*) rhoR,uuR,pR,sxxR
 	!	 pause
@@ -863,21 +863,21 @@ endif
 !		pause
 !	endif
 
-	if (S_star.ge.u(i))then
+!	if (S_star.ge.u(i))then
 		call state_choose(1)
 		h(i,0)=0
 		h(i,1)=pL_star-sxxL_star
 		h(i,2)=(pL_star-sxxL_star)*s_star
 		h(i,3)=-4.d0*miu/3*s_star
 		u_half(i)=s_star
-	else
-		call state_choose(2)
-		h(i,0)=0
-		h(i,1)=pR_star-sxxR_star
-		h(i,2)=(pR_star-sxxR_star)*s_star
-		h(i,3)=-4.d0*miu/3*s_star
-		u_half(i)=s_star
-	endif
+!	else
+!		call state_choose(2)
+!		h(i,0)=0
+!		h(i,1)=pR_star-sxxR_star
+!		h(i,2)=(pR_star-sxxR_star)*s_star
+!		h(i,3)=-4.d0*miu/3*s_star
+!		u_half(i)=s_star
+!	endif
 
 ! if (S_star.le.u(i))then
 !		h(i,0)=0
@@ -893,7 +893,123 @@ endif
 !		u_half(i)=s_star
 !	endif
 
-
 endsubroutine
 
+subroutine HLLC_EP_two_matter(nv,jx,inter,u,ul,ur,h,u_half)
+	  use global_cont
+	  implicit none
+	  double precision  f_eta,fgamma 
+	  integer nv,i,jx,j,inter
+	  double precision u(-nv:jx+nv)
+	  double precision ul(-nv:jx+nv,0:3)
+	  double precision ur(-nv:jx+nv,0:3)
+	  double precision h(-nv:jx+nv,0:3)
+	  double precision u_half(-nv:jx+nv)
+	  double precision ue(0:3),FL(0:3),FR(0:3),u_hll(0:3)
 
+	  double precision rhoL,uuL,sxxL,pL,cL,sL,sxxL_bar,sxxL_star,sxL_star,pL_star,sigmaxL_star
+	  double precision rhoR,uuR,sxxR,pR,cR,sR,sxxR_bar,sxxR_star,sxR_star,pR_star,sigmaxR_star
+	  double precision s_barStar,feta,feta1,feta_eta,a_squre,s_star,f_eta_eta
+
+do i =-nv, jx+nv-1
+
+if(i.le.inter-1) then 
+	call state_choose(1)
+else
+	call state_choose(2)
+endif
+
+	  rhoL= uL(i,0)
+	  uuL = uL(i,1)
+	  pL =  uL(i,2)
+	  sxxL= uL(i,3)
+	 call sound(uL(i,:),cL)
+
+	  rhoR= uR(i,0)
+	  uuR = uR(i,1)
+	  pR =  uR(i,2)
+	  sxxR= uR(i,3)
+	  call sound(uR(i,:),cR)
+	  
+	  sL=min(uuL-cL,uuR-cR)
+	  sR=max(uuL+cL,uuR+cR)
+      s_barStar = (sxxR-sxxL)/(rhoL*(sL-uuL)-rhoR*(sR-uuR))
+      sxxL_bar=sxxL+rhoL*(sL-uuL)*s_barStar
+	sxxR_bar=sxxR+rhoR*(sR-uuR)*s_barStar
+	sxxL_star=Fgamma(sxxL_bar,i,inter)
+	sxxR_star=Fgamma(sxxR_bar,i,inter)
+	
+	sxL_star=(sxxL_star-sxxL)/(rhoL*(sL-uuL))
+	sxR_star=(sxxR_star-sxxR)/(rhoR*(sR-uuR))
+	
+	s_star=(pR-pL+rhoL*(uuL-sxL_star)*(sL-uuL)-rhoR*(uuR-sxR_star)*(sR-uuR))/(rhoL*(sL-uuL)-rhoR*(sR-uuR))
+
+	!u_half(i)=s_star
+	pL_star=pL+rhoL*(sL-uuL)*(s_star+sxL_star-uuL)
+	pR_star=pR+rhoR*(sR-uuR)*(s_star+sxR_star-uuR)
+
+ if (S_star.ge.u(i))then
+		h(i,0)=0
+		h(i,1)=pL_star-sxxL_star
+		h(i,2)=(pL_star-sxxL_star)*s_star
+		h(i,3)=-4.d0*miu/3*s_star
+		u_half(i)=s_star
+	else 
+		h(i,0)=0
+		h(i,1)=pR_star-sxxR_star
+		h(i,2)=(pR_star-sxxR_star)*s_star
+		h(i,3)=-4.d0*miu/3*s_star
+		u_half(i)=s_star
+	endif
+
+enddo
+
+!i = inter-1
+!
+!call state_choose(1)
+!	  rhoL= uL(i,0)
+!	  uuL = uL(i,1)
+!	  pL =  uL(i,2)
+!	  sxxL= uL(i,3)
+!	 call sound(uL(i,:),cL)
+!
+!call state_choose(2)
+!	  rhoR= uR(i,0)
+!	  uuR = uR(i,1)
+!	  pR =  uR(i,2)
+!	  sxxR= uR(i,3)
+!	  call sound(uR(i,:),cR)
+!	  
+!	  sL=min(uuL-cL,uuR-cR)
+!	  sR=max(uuL+cL,uuR+cR)
+!      s_barStar = (sxxR-sxxL)/(rhoL*(sL-uuL)-rhoR*(sR-uuR))
+!      sxxL_bar=sxxL+rhoL*(sL-uuL)*s_barStar
+!	sxxR_bar=sxxR+rhoR*(sR-uuR)*s_barStar
+!
+!	sxxL_star=Fgamma(sxxL_bar,i-1,inter)
+!	sxxR_star=Fgamma(sxxR_bar,i+1,inter)
+!	
+!	sxL_star=(sxxL_star-sxxL)/(rhoL*(sL-uuL))
+!	sxR_star=(sxxR_star-sxxR)/(rhoR*(sR-uuR))
+!	
+!	s_star=(pR-pL+rhoL*(uuL-sxL_star)*(sL-uuL)-rhoR*(uuR-sxR_star)*(sR-uuR))/(rhoL*(sL-uuL)-rhoR*(sR-uuR))
+!
+!	!u_half(i)=s_star
+!	pL_star=pL+rhoL*(sL-uuL)*(s_star+sxL_star-uuL)
+!	pR_star=pR+rhoR*(sR-uuR)*(s_star+sxR_star-uuR)
+!
+! if (S_star.ge.u(i))then
+!		h(i,0)=0
+!		h(i,1)=pL_star-sxxL_star
+!		h(i,2)=(pL_star-sxxL_star)*s_star
+!		h(i,3)=-4.d0*miu/3*s_star
+!		u_half(i)=s_star
+!	else 
+!		h(i,0)=0
+!		h(i,1)=pR_star-sxxR_star
+!		h(i,2)=(pR_star-sxxR_star)*s_star
+!		h(i,3)=-4.d0*miu/3*s_star
+!		u_half(i)=s_star
+!	endif
+
+	end

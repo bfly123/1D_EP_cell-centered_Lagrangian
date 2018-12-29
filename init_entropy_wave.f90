@@ -45,5 +45,3 @@ double precision ue(0:3)
 		call trans_ue_to_u(uo(i,:),u(i,:))
 	enddo
 end 
-
-

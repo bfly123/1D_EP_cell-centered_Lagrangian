@@ -73,7 +73,8 @@ call  WENO3_new_two_matter(nv,jx, inter,uo(:,i),ulo(:,i),uro(:,i),i)
 
 !call output1(ul)	
 !pause
-!call  HLLC_EP(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
+!call  HLLC_EP_two_matter(nv,jx,inter,u4(:,1)/u4(:,0),ulo,uro,h,u_half)
+
 !call  HLLC_EP_new(nv,jx,u4(:,1)/u4(:,0),ul,ur,h,u_half)
 call  HLLC_EP_new_two_matter(nv,jx,inter,u4(:,1)/u4(:,0),ulo,uro,h,u_half)
 case(2)

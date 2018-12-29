@@ -58,21 +58,21 @@
 
 	 case(2)
 
-	Y0=3.d3
-	rho0=278.5d0
+	Y0=3.d8
+	rho0=2785
 	gamma0=2.d0
-	miu=2.76d5
-	a0=532.8d0
+	miu=2.76d10
+	a0=5328
 	pi=6*dasin(0.5d0)
 	s0=1.338d0
 
 	case(1) 
 
-		Y0=9.d2
-		rho0=893
+		Y0=9.d7
+		rho0=8930
 		gamma0=2.d0
-		miu=4.5d5
-		a0=394
+		miu=4.5d10
+		a0=3940
 		pi=6*dasin(0.5d0)
 		s0=1.49d0
 

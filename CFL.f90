@@ -23,9 +23,9 @@
 	  !a_squre=a0**2 *feta_eta + p/rho**2 *rho0 *gamma0
 	  !c=sqrt(a_squre-rho0/rho**2*gamma0*sxx+4.d0/3*miu/rho)
 		if( dx.le.dxmin ) then
-			dxmin = dx/c
+			dxmin = dx
 		endif
 	enddo
 	  
-     dt=SF*dxmin
+     dt=SF*dxmin/c
       end

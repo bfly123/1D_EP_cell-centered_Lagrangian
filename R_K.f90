@@ -1,10 +1,11 @@
  subroutine R_K(t,dt)
 	 use global
+	 use global_cont
  implicit none
  integer i,j,k
  double precision udx1(-nv:jx+nv,0:3)
  double precision udx2(-nv:jx+nv,0:3)
- double precision udx3(-nv:jx+nv,0:3)
+ double precision udx3(-nv:jx+nv,0:3) 
  double precision udx4(-nv:jx+nv,0:3)
 
  double precision x1(-nv:jx+nv)
@@ -23,7 +24,7 @@
  double precision f(-nv:jx+nv,0:3)
  double precision u_half(-nv:jx+nv)
  double precision dx1(-nv:jx+nv)
- double precision dx,dt,dxmin,fgamma,t
+ double precision dx,dt,dxmin,fgamma,t,rho,rho1,sxx0
  integer time_order
 
   time_order=3
@@ -101,10 +102,20 @@ case(5)
     	udx1(i,3)=udx(i,3)-dt*f(i,3)/dx1(i)
 		dx1(i)= x1(i)-x1(i-1)
     	udx1(i,0:2)=udx(i,0:2)-dt*f(i,0:2) +dt*src(i,0:2)
-    	u(i,3)=udx1(i,3)
+    	!u(i,3)=udx1(i,3)
+		urho(i) = u(i,0)
+		rho1=u(i,0)
+		sxx1(i)=u(i,3)
 		u(i,0:2) = udx1(i,0:2)/dx1(i)
+		if (i.ge.inter)then
+			call state_choose(2)
+		else
+			call state_choose(1)
+		endif
+		!u(i,3) = udx(i,3)
+		u(i,3) = -4.d0/3*miu*log(u(i,0)/rho1)+u(i,3)
 
-		!u(i,3) = fgamma(u(i,3),i,inter)
+		u(i,3) = fgamma(u(i,3),i,inter)
 		!call trans_u_to_ue(u(i,:),uo(i,:))
 		!call trans_u_to_ue()
 	!	call rho_sxx(urho(i),u(i,0),u(i,3))
@@ -125,11 +136,20 @@ call source1(t+dt,src)
     	udx2(i,3)=3.d0/4*udx(i,3)+1.d0/4*udx1(i,3)-1.d0/4*dt*f(i,3)/dx1(i)
 		dx1(i)= x2(i)-x2(i-1)
     	udx2(i,0:2)=3.d0/4*udx(i,0:2)+1.d0/4*udx1(i,0:2)-1.d0/4*dt*f(i,0:2)  +1.d0/4*dt*src(i,0:2)
-    	u(i,3)=udx2(i,3)
+    	!u(i,3)=udx2(i,3)
+		rho1=u(i,0)
 		u(i,0:2) = udx2(i,0:2)/dx1(i)
+
+		if (i.ge.inter)then
+			call state_choose(2)
+		else
+			call state_choose(1)
+		endif
+		u(i,3) = -4.d0/3*miu*log(u(i,0)/rho1)+u(i,3)
+
 		!call rho_sxx(urho(i),u(i,0),u(i,3))
 		!urho(i)=u(i,0)
-		!u(i,3) = fgamma(u(i,3),i,inter)
+		u(i,3) = fgamma(u(i,3),i,inter)
 		!call trans_u_to_ue(u(i,:),uo(i,:))
 	enddo
 !
@@ -148,9 +168,17 @@ call source1(t+dt,src)
 		dx1(i)= x(i)-x(i-1)
     	udx(i,0:2)=1.d0/3*udx(i,0:2)+2.d0/3*udx2(i,0:2)-2.d0/3*dt*f(i,0:2) +2.d0/3*dt*src(i,0:2)
     !	udx(i,0:2)=udx(i,0:2)+dt*dx1(i)*src(i,0:2)
-    	u(i,3)=udx(i,3)
+    	!u(i,3)=udx(i,3)
+		rho = u(i,0)
 		u(i,0:2) = udx(i,0:2)/dx1(i)
-		!call rho_sxx(urho(i),u(i,0),u(i,3))
+	!	call rho_sxx(urho(i),u(i,0),u(i,3))
+		if (i.ge.inter)then
+			call state_choose(2)
+		else
+			call state_choose(1)
+		endif
+		u(i,3) = -4.d0/3*miu*log(u(i,0)/urho(i))+sxx1(i)
+
 		!urho(i)=u(i,0)
 		u(i,3) = fgamma(u(i,3),i,inter)
 

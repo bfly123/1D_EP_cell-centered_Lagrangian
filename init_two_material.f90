@@ -8,8 +8,8 @@ double precision f_eta,dx,p
 
 
     nv=5
-    jx=200
-    dlx=5.0d0
+    jx=50000
+    dlx=5.0d-2
 	dx=dlx/jx
     allocate(U(-nv:jx+nv,0:3))
     allocate(Uo(-nv:jx+nv,0:3))
@@ -19,25 +19,24 @@ double precision f_eta,dx,p
 
 
     !TT=5.d-6
-    TT=2.d-3
-    !TT=1.d-6
-	SF=0.2d0
+    TT=2.d-6
+	SF=0.5d0
 !	SF=0.1d0
 
-    rho1=893d0
-    u2=0
-    p1=1.d-6
+    rho1=8930
+    u1=50
+    p1=1.d-12
 	sxx1=0
     
-    rho2=278.5d0
-    u1=90.0d0
+    rho2=2785
+    u2=0
     !u1=50.d0
-    p2=1.d-6
+    p2=1.d-12
     sxx2=0
 
-	  inter = int(2.5d0/dx)
+	  inter = int(2.5d-2/dx)
     do i=-nv,jx+nv
-	x(i)=(i-0.5d0)*dx 
+	x(i)=(i-0.5)*dx 
         if(i.ge.inter)then !X(i-1/2)
 			call state_choose(2)
 			uo(i,0)=rho2
